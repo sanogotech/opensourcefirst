@@ -9,38 +9,63 @@
 
 ---
 
-## **5 critères pour choisir et conserver une solution Open Source (détaillés)**
+## **5 critères pour choisir et conserver une solution Open Source (détaillés avec outils)**
 
 1. **Maturité et stabilité du projet**
 
    * Fréquence des mises à jour, roadmap claire, longévité du projet.
    * Historique des versions, suivi des évolutions majeures et mineures.
-   * Exemples : PostgreSQL (mises à jour régulières, long historique), Kubernetes (roadmap et communauté active).
+   * Exemples :
+
+     * **Bases de données** : PostgreSQL (mises à jour régulières, long historique)
+     * **Orchestration et conteneurs** : Kubernetes (roadmap et communauté active)
+     * **OS Linux stables** : Ubuntu LTS, Debian Stable
+     * **Outils de supervision** : Nagios, Zabbix (versions stables, communauté active)
 
 2. **Communauté et support**
 
    * Taille et activité : forums, mailing lists, GitHub/GitLab commits.
    * Support commercial ou SLA externe si nécessaire.
    * Qualité de la documentation et guides pratiques.
-   * Exemples : WordPress (communauté active), Odoo (forum + support partenaire).
+   * Exemples :
+
+     * **CMS** : WordPress (communauté active, plugins)
+     * **ERP** : Odoo (forum + support partenaire)
+     * **OS et sécurité** : CentOS Stream, Fedora (communautés dynamiques)
+     * **Supervision et monitoring** : Prometheus, Grafana (docs et support large)
 
 3. **Sécurité et gestion des vulnérabilités**
 
    * Suivi des CVE, rapidité des correctifs, audit régulier.
    * Politique de patch management et correctifs critiques.
-   * Exemple : Linux kernel (alertes CVE, correctifs fréquents).
+   * Exemples :
+
+     * **OS** : Linux Kernel (alertes CVE, correctifs fréquents)
+     * **Sécurité réseau** : OpenVPN, pfSense (firewall et VPN open source avec correctifs actifs)
+     * **Supervision de sécurité** : OSSEC, Wazuh (IDS/IPS open source, alertes en temps réel)
 
 4. **Licence et conformité juridique**
 
    * Types de licences : GPL, MIT, Apache.
    * Vérification des obligations légales selon usage.
    * Gestion des contributions externes pour éviter conflits légaux.
+   * Exemples :
+
+     * **OS et outils** : Linux (GPL), Apache HTTP Server (Apache License 2.0), Redis (BSD)
+     * **ERP et collaboration** : Odoo (AGPL), Nextcloud (AGPL)
 
 5. **Interopérabilité et compatibilité**
 
    * Intégration avec systèmes existants (ERP, CRM, cloud, API).
    * Standards ouverts pour éviter le vendor lock-in.
-   * Exemples : PostgreSQL + ERP, Kubernetes + CI/CD pipelines, OpenStack + stockage Ceph.
+   * Exemples :
+
+     * **Bases de données** : PostgreSQL + ERP
+     * **Orchestration** : Kubernetes + CI/CD pipelines (Jenkins, GitLab CI)
+     * **Cloud et stockage** : OpenStack + Ceph
+     * **Monitoring et alerting** : Prometheus + Grafana + Alertmanager
+
+---
 
 ---
 

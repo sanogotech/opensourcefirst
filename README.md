@@ -1,6 +1,7 @@
 # OpenSource First
 
 
+
 # **Séminaire : Open Source vs Solutions Propriétaires – Version détaillée**
 
 **Durée : 5 jours**

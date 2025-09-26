@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Évaluateur Open Source vs Propriétaire</title>
+    <title>Évaluateur Open Source vs Propriétaire - V4.0</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --open-source-color: #28a745;
-            --proprietary-color: #dc3545;
-            --hybrid-color: #ffc107;
+            --open-source-color: #28a745; /* Vert pour l'Open Source */
+            --proprietary-color: #dc3545; /* Rouge pour le Propriétaire */
+            --hybrid-color: #ffc107; /* Jaune pour l'Hybride */
         }
-        
+
         body {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333;
             padding-bottom: 50px;
         }
-        
+
         .header-section {
             background: linear-gradient(90deg, #1a2a6c, #b21f1f, #fdbb2d);
             color: white;
@@ -28,7 +28,7 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             margin-bottom: 30px;
         }
-        
+
         .card {
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.08);
@@ -36,26 +36,7 @@
             margin-bottom: 20px;
             transition: transform 0.3s;
         }
-        
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .criteria-card {
-            background: white;
-        }
-        
-        .comparison-table {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-        }
-        
-        .comparison-table th {
-            background-color: #f8f9fa;
-            font-weight: 600;
-        }
-        
+
         .score-section {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -63,131 +44,87 @@
             padding: 25px;
             margin-top: 30px;
         }
-        
+
         .score-display {
             font-size: 3rem;
             font-weight: bold;
             text-align: center;
             margin: 20px 0;
         }
-        
+
         .open-source-score {
             color: var(--open-source-color);
         }
-        
+
         .proprietary-score {
             color: var(--proprietary-color);
         }
-        
+
         .recommendation {
             font-size: 1.5rem;
             text-align: center;
             margin: 20px 0;
             font-weight: bold;
         }
-        
+
         .open-source-recommendation {
             color: var(--open-source-color);
         }
-        
+
         .proprietary-recommendation {
             color: var(--proprietary-color);
         }
-        
+
         .hybrid-recommendation {
             color: var(--hybrid-color);
         }
-        
+
         .slider-container {
             padding: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
-        
+
+        .slider-wrapper {
+            flex: 1;
+        }
+
         .slider-label {
             font-weight: 600;
             margin-bottom: 5px;
         }
-        
-        .form-range {
-            width: 100%;
-        }
-        
-        .tool-section {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            margin-top: 30px;
-        }
-        
-        .tool-item {
-            padding: 10px 15px;
-            border-left: 4px solid var(--open-source-color);
-            margin-bottom: 10px;
-            background-color: #f8f9fa;
-            border-radius: 0 5px 5px 0;
-        }
-        
-        .maturity-level {
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            color: white;
-            font-weight: 600;
-        }
-        
-        .level-1 { background: linear-gradient(90deg, #ff9a9e, #fad0c4); }
-        .level-2 { background: linear-gradient(90deg, #a1c4fd, #c2e9fb); }
-        .level-3 { background: linear-gradient(90deg, #ffecd2, #fcb69f); }
-        .level-4 { background: linear-gradient(90deg, #84fab0, #8fd3f4); }
-        .level-5 { background: linear-gradient(90deg, #667eea, #764ba2); }
-        
-        .best-practice-item {
-            padding: 10px;
-            border-left: 4px solid #28a745;
-            margin-bottom: 10px;
-            background-color: #f8f9fa;
-        }
-        
-        .badge-custom {
-            font-size: 0.8rem;
-            padding: 5px 10px;
-            border-radius: 20px;
-        }
-        
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            color: #6c757d;
-            font-size: 0.9rem;
-        }
-        
+
         .slider-value {
             font-weight: bold;
             color: #495057;
             min-width: 30px;
             text-align: center;
         }
-        
-        .slider-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+
+        .tab-pane {
+            padding: 20px;
+            border: 1px solid #dee2e6;
+            border-top: none;
+            border-radius: 0 0 15px 15px;
+            background-color: white;
         }
         
-        .slider-wrapper {
-            flex: 1;
+        .advantage-box {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
-        
-        @media (max-width: 768px) {
-            .slider-container {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 5px;
-            }
-            
-            .slider-value {
-                align-self: flex-end;
-            }
+
+        .os-advantage {
+            background-color: #e6f7ed;
+            border-left: 5px solid var(--open-source-color);
+        }
+
+        .prop-advantage {
+            background-color: #fcebeb;
+            border-left: 5px solid var(--proprietary-color);
         }
     </style>
 </head>
@@ -196,15 +133,15 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-8">
-                    <h1 class="display-4 fw-bold"><i class="fas fa-balance-scale"></i> Évaluateur Open Source vs Propriétaire</h1>
-                    <p class="lead">Outil d'aide à la décision stratégique pour choisir entre solutions Open Source et propriétaires</p>
+                    <h1 class="display-4 fw-bold"><i class="fas fa-balance-scale"></i> Évaluateur Open Source vs. Propriétaire</h1>
+                    <p class="lead">Outil d'aide à la décision stratégique intégrant les critères de communauté et de souveraineté.</p>
                 </div>
                 <div class="col-md-4 text-end">
                     <div class="bg-white text-dark p-3 rounded shadow-sm d-inline-block">
                         <h5 class="mb-1">Score de recommandation</h5>
                         <div class="d-flex justify-content-center">
-                            <span class="open-source-score me-3"><i class="fas fa-code-branch"></i> Open Source: <span id="openSourceScore">0</span></span>
-                            <span class="proprietary-score"><i class="fas fa-copyright"></i> Propriétaire: <span id="proprietaryScore">0</span></span>
+                            <span class="open-source-score me-3"><i class="fas fa-code-branch"></i> OS: <span id="openSourceScore">0</span></span>
+                            <span class="proprietary-score"><i class="fas fa-copyright"></i> Prop: <span id="proprietaryScore">0</span></span>
                         </div>
                     </div>
                 </div>
@@ -213,319 +150,430 @@
     </div>
 
     <div class="container">
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="card criteria-card">
-                    <div class="card-header bg-primary text-white">
-                        <h3 class="card-title mb-0"><i class="fas fa-sliders-h"></i> Critères d'évaluation</h3>
-                    </div>
-                    <div class="card-body">
-                        <p class="text-muted">Évaluez chaque critère sur une échelle de 1 à 5 (1 = faible importance, 5 = très important)</p>
-                        
-                        <div class="slider-container">
-                            <div class="slider-label">Budget / Coût</div>
-                            <div class="slider-wrapper">
-                                <input type="range" class="form-range" min="1" max="5" value="3" id="budgetSlider">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="evaluation-tab" data-bs-toggle="tab" data-bs-target="#evaluation" type="button" role="tab" aria-controls="evaluation" aria-selected="true"><i class="fas fa-sliders-h"></i> Évaluation</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="process-tab" data-bs-toggle="tab" data-bs-target="#process" type="button" role="tab" aria-controls="process" aria-selected="false"><i class="fas fa-project-diagram"></i> Processus Complet</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="makeorbuy-tab" data-bs-toggle="tab" data-bs-target="#makeorbuy" type="button" role="tab" aria-controls="makeorbuy" aria-selected="false"><i class="fas fa-handshake"></i> Make Or Buy (OS)</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="risk-tab" data-bs-toggle="tab" data-bs-target="#risk" type="button" role="tab" aria-controls="risk" aria-selected="false"><i class="fas fa-shield-alt"></i> Risques & Clés</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="glossary-tab" data-bs-toggle="tab" data-bs-target="#glossary" type="button" role="tab" aria-controls="glossary" aria-selected="false"><i class="fas fa-book-open"></i> Glossaire</button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="evaluation" role="tabpanel" aria-labelledby="evaluation-tab">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card criteria-card">
+                            <div class="card-header bg-primary text-white">
+                                <h3 class="card-title mb-0"><i class="fas fa-sliders-h"></i> Pondération des Critères de Décision</h3>
                             </div>
-                            <div class="slider-value" id="budgetValue">3</div>
-                        </div>
-                        
-                        <div class="slider-container">
-                            <div class="slider-label">Flexibilité / Personnalisation</div>
-                            <div class="slider-wrapper">
-                                <input type="range" class="form-range" min="1" max="5" value="3" id="flexibilitySlider">
+                            <div class="card-body">
+                                <p class="text-muted">Évaluez l'importance de chaque critère (1 = faible, 5 = très important) pour votre projet.</p>
+
+                                <div class="slider-container">
+                                    <div class="slider-label">Budget / TCO (Coût Total de Possession)</div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="budgetSlider"></div>
+                                    <div class="slider-value" id="budgetValue">3</div>
+                                </div>
+                                
+                                <div class="slider-container">
+                                    <div class="slider-label">Délai de Mise en Œuvre / Time-to-Market</div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="timetomarketSlider"></div>
+                                    <div class="slider-value" id="timetomarketValue">3</div>
+                                </div>
+
+                                <div class="slider-container">
+                                    <div class="slider-label">Flexibilité / Personnalisation</div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="flexibilitySlider"></div>
+                                    <div class="slider-value" id="flexibilityValue">3</div>
+                                </div>
+
+                                <div class="slider-container">
+                                    <div class="slider-label">Support / Niveau de Service (SLA)</div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="supportSlider"></div>
+                                    <div class="slider-value" id="supportValue">3</div>
+                                </div>
+                                
+                                <div class="slider-container">
+                                    <div class="slider-label">Communauté / Écosystème (Taille et Dynamisme)</div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="communitySlider"></div>
+                                    <div class="slider-value" id="communityValue">3</div>
+                                </div>
+                                
+                                <div class="slider-container">
+                                    <div class="slider-label">Sécurité / Auditabilité du Code</div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="securitySlider"></div>
+                                    <div class="slider-value" id="securityValue">3</div>
+                                </div>
+
+                                <div class="slider-container">
+                                    <div class="slider-label">Vendor Lock-in (Dépendance Fournisseur)</div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="lockinSlider"></div>
+                                    <div class="slider-value" id="lockinValue">3</div>
+                                </div>
+                                
+                                <div class="slider-container">
+                                    <div class="slider-label">Souveraineté des Données / Localisation</div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="sovereigntySlider"></div>
+                                    <div class="slider-value" id="sovereigntyValue">3</div>
+                                </div>
+                                
+                                <div class="slider-container">
+                                    <div class="slider-label">Réversibilité / Portabilité</div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="reversibilitySlider"></div>
+                                    <div class="slider-value" id="reversibilityValue">3</div>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <button class="btn btn-primary btn-lg w-100" id="calculateBtn">
+                                        <i class="fas fa-calculator"></i> Calculer la recommandation
+                                    </button>
+                                </div>
                             </div>
-                            <div class="slider-value" id="flexibilityValue">3</div>
                         </div>
-                        
-                        <div class="slider-container">
-                            <div class="slider-label">Support / SLA</div>
-                            <div class="slider-wrapper">
-                                <input type="range" class="form-range" min="1" max="5" value="3" id="supportSlider">
+
+                        <div class="card comparison-table">
+                            <div class="card-header bg-info text-white">
+                                <h3 class="card-title mb-0"><i class="fas fa-table"></i> Comparatif Open Source vs. Propriétaire</h3>
                             </div>
-                            <div class="slider-value" id="supportValue">3</div>
-                        </div>
-                        
-                        <div class="slider-container">
-                            <div class="slider-label">Sécurité / Conformité</div>
-                            <div class="slider-wrapper">
-                                <input type="range" class="form-range" min="1" max="5" value="3" id="securitySlider">
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Critère</th>
+                                                <th class="text-success">Open Source</th>
+                                                <th class="text-danger">Propriétaire</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr><td>TCO</td><td><span class="badge bg-success">Faible coût de licence, variable en maintenance.</span></td><td><span class="badge bg-danger">Coût de licence élevé, support contractuel inclus.</span></td></tr>
+                                            <tr><td>Délai (TTM)</td><td><span class="badge bg-success">Rapide (solution prête à l'emploi).</span></td><td><span class="badge bg-warning text-dark">Moyen (intégration possible).</span></td></tr>
+                                            <tr><td>Flexibilité</td><td><span class="badge bg-success">Très élevée (code modifiable).</span></td><td><span class="badge bg-danger">Faible (boîte noire).</span></td></tr>
+                                            <tr><td>Support (SLA)</td><td><span class="badge bg-warning text-dark">Communauté ou Prestataire externe.</span></td><td><span class="badge bg-success">Garantie éditeur (SLA contractuel).</span></td></tr>
+                                            <tr><td>Communauté</td><td><span class="badge bg-success">Large écosystème, source d'innovation.</span></td><td><span class="badge bg-danger">Limitée à l'éditeur.</span></td></tr>
+                                            <tr><td>Sécurité</td><td><span class="badge bg-success">Code auditable (transparence).</span></td><td><span class="badge bg-warning text-dark">Sécurité par l'obscurité, contrôle éditeur.</span></td></tr>
+                                            <tr><td>Lock-in</td><td><span class="badge bg-success">Très faible (standards ouverts).</span></td><td><span class="badge bg-danger">Très élevé (dépendance forte à l'éditeur).</span></td></tr>
+                                            <tr><td>Souveraineté</td><td><span class="badge bg-success">Contrôle total (si auto-hébergé).</span></td><td><span class="badge bg-warning text-dark">Dépend de l'éditeur et de la localisation.</span></td></tr>
+                                            <tr><td>Réversibilité</td><td><span class="badge bg-success">Forte (migration aisée).</span></td><td><span class="badge bg-danger">Faible (formats/API propriétaires).</span></td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                            <div class="slider-value" id="securityValue">3</div>
                         </div>
-                        
-                        <div class="slider-container">
-                            <div class="slider-label">Innovation</div>
-                            <div class="slider-wrapper">
-                                <input type="range" class="form-range" min="1" max="5" value="3" id="innovationSlider">
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="score-section">
+                            <h3><i class="fas fa-chart-bar"></i> Résultat de l'évaluation</h3>
+                            <div class="score-display">
+                                <span class="open-source-score" id="finalOpenSourceScore">0</span> -
+                                <span class="proprietary-score" id="finalProprietaryScore">0</span>
                             </div>
-                            <div class="slider-value" id="innovationValue">3</div>
-                        </div>
-                        
-                        <div class="slider-container">
-                            <div class="slider-label">Vendor Lock-in</div>
-                            <div class="slider-wrapper">
-                                <input type="range" class="form-range" min="1" max="5" value="3" id="lockinSlider">
+                            <div class="recommendation" id="recommendationText">
+                                Ajustez les critères et calculez pour voir la recommandation
                             </div>
-                            <div class="slider-value" id="lockinValue">3</div>
-                        </div>
-                        
-                        <div class="slider-container">
-                            <div class="slider-label">Interopérabilité</div>
-                            <div class="slider-wrapper">
-                                <input type="range" class="form-range" min="1" max="5" value="3" id="interoperabilitySlider">
+                            <div id="recommendationDetails">
+                                <p id="recommendationExplanation" class="text-center">Les scores sont calculés en pondérant l'importance de chaque critère.</p>
                             </div>
-                            <div class="slider-value" id="interoperabilityValue">3</div>
                         </div>
-                        
-                        <div class="slider-container">
-                            <div class="slider-label">Compétence interne</div>
-                            <div class="slider-wrapper">
-                                <input type="range" class="form-range" min="1" max="5" value="3" id="skillsSlider">
+
+                        <div class="card">
+                            <div class="card-header bg-warning text-dark">
+                                <h3 class="card-title mb-0"><i class="fas fa-chart-line"></i> Les 3 Scénarios</h3>
                             </div>
-                            <div class="slider-value" id="skillsValue">3</div>
-                        </div>
-                        
-                        <div class="mt-4">
-                            <button class="btn btn-primary btn-lg w-100" id="calculateBtn">
-                                <i class="fas fa-calculator"></i> Calculer la recommandation
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="card comparison-table">
-                    <div class="card-header bg-info text-white">
-                        <h3 class="card-title mb-0"><i class="fas fa-table"></i> Comparatif Open Source vs Propriétaire</h3>
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-hover mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>Critère</th>
-                                        <th class="text-success">Open Source</th>
-                                        <th class="text-danger">Propriétaire</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Budget initial</td>
-                                        <td><span class="badge bg-success">Faible</span></td>
-                                        <td><span class="badge bg-danger">Élevé</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Flexibilité</td>
-                                        <td><span class="badge bg-success">Très élevée</span></td>
-                                        <td><span class="badge bg-warning text-dark">Limitée</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Support</td>
-                                        <td><span class="badge bg-warning text-dark">Communauté / Prestataire</span></td>
-                                        <td><span class="badge bg-success">SLA officiel</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Sécurité</td>
-                                        <td><span class="badge bg-warning text-dark">Dépend de l'équipe</span></td>
-                                        <td><span class="badge bg-success">Contrôlée par l'éditeur</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Innovation</td>
-                                        <td><span class="badge bg-success">Totale</span></td>
-                                        <td><span class="badge bg-warning text-dark">Limitée</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Vendor Lock-in</td>
-                                        <td><span class="badge bg-success">Faible</span></td>
-                                        <td><span class="badge bg-danger">Élevé</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Interopérabilité</td>
-                                        <td><span class="badge bg-success">Standards ouverts</span></td>
-                                        <td><span class="badge bg-warning text-dark">Souvent fermé</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-lg-4">
-                <div class="score-section">
-                    <h3><i class="fas fa-chart-bar"></i> Résultat de l'évaluation</h3>
-                    <div class="score-display">
-                        <span class="open-source-score" id="finalOpenSourceScore">0</span> - 
-                        <span class="proprietary-score" id="finalProprietaryScore">0</span>
-                    </div>
-                    <div class="recommendation" id="recommendationText">
-                        Ajustez les critères et calculez pour voir la recommandation
-                    </div>
-                    <div id="recommendationDetails">
-                        <p id="recommendationExplanation" class="text-center">Les scores sont calculés en fonction de l'importance que vous accordez à chaque critère.</p>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-header bg-warning text-dark">
-                        <h3 class="card-title mb-0"><i class="fas fa-tools"></i> Outils Open Source stratégiques</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="tool-item">
-                            <strong>OS / Infra</strong>: Linux, Kubernetes, OpenStack
-                        </div>
-                        <div class="tool-item">
-                            <strong>Bases de données</strong>: PostgreSQL, MySQL
-                        </div>
-                        <div class="tool-item">
-                            <strong>CI/CD</strong>: Jenkins, GitLab CI
-                        </div>
-                        <div class="tool-item">
-                            <strong>ERP / Collaboration</strong>: Odoo, Nextcloud
-                        </div>
-                        <div class="tool-item">
-                            <strong>Monitoring</strong>: Prometheus, Grafana, ELK
-                        </div>
-                        <div class="tool-item">
-                            <strong>Sécurité</strong>: Suricata, Wazuh, Kali Linux
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-header bg-success text-white">
-                        <h3 class="card-title mb-0"><i class="fas fa-chart-line"></i> Niveaux de maturité Open Source</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="maturity-level level-1">
-                            <i class="fas fa-search"></i> Niveau 1: Découverte
-                        </div>
-                        <div class="maturity-level level-2">
-                            <i class="fas fa-play-circle"></i> Niveau 2: Adoption initiale
-                        </div>
-                        <div class="maturity-level level-3">
-                            <i class="fas fa-chart-bar"></i> Niveau 3: Adoption avancée
-                        </div>
-                        <div class="maturity-level level-4">
-                            <i class="fas fa-cogs"></i> Niveau 4: Intégration stratégique
-                        </div>
-                        <div class="maturity-level level-5">
-                            <i class="fas fa-trophy"></i> Niveau 5: Gouvernance & excellence
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item open-source-recommendation" style="font-weight: bold;">OS : <span class="text-success">Si Flexibilité & TCO sont clés.</span></li>
+                                    <li class="list-group-item proprietary-recommendation" style="font-weight: bold;">Prop : <span class="text-danger">Si SLA contractuel & Support critique.</span></li>
+                                    <li class="list-group-item hybrid-recommendation" style="font-weight: bold;">Hybride : <span class="text-warning">Si les besoins sont équilibrés.</span></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+
         
-        <div class="row mt-4">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header bg-info text-white">
-                        <h3 class="card-title mb-0"><i class="fas fa-check-circle"></i> Top 5 bonnes pratiques Open Source</h3>
+			<div class="tab-pane fade" id="process" role="tabpanel" aria-labelledby="process-tab">
+                <h2><i class="fas fa-project-diagram"></i> Processus Complet : Amont et Aval du Choix</h2>
+                <p class="lead">Le cycle de vie de la solution est découpé en phases critiques. La décision Open Source ou Propriétaire se situe au cœur de ce processus.</p>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>Phase Amont : Définition et Sourcing</h4>
+                        <div class="advantage-box">
+                            <i class="fas fa-search text-primary"></i> **1. Analyse des Besoins et Spécificités (EXPRIMER)**
+                            <p class="small">Définition précise des fonctionnalités requises. Détermination si le besoin est *standard* (favorisant l'OS/Buy) ou *stratégique* (favorisant le Make).</p>
+                        </div>
+                        <div class="advantage-box">
+                            <i class="fas fa-cogs text-primary"></i> **2. Matrice Make Or Buy (CHOIX DU MODÈLE)**
+                            <p class="small">Évaluation initiale : Faut-il développer en interne (**Make**) ou acquérir une solution existante (**Buy/Leverage**).</p>
+                        </div>
+                        <div class="advantage-box" style="border-left-color: var(--hybrid-color); background-color: #fff8e8;">
+                            <i class="fas fa-balance-scale text-warning"></i> **3. Choix Open Source vs Propriétaire (DÉCIDER)**
+                            <p class="small">**Point de bascule.** Utilisation de l'outil d'évaluation (score OS/Prop) pour valider l'orientation. Déterminer si un Proof of Concept (PoC) est nécessaire.</p>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <div class="best-practice-item">
-                            <strong>1. Cartographier les logiciels existants</strong> - Identifier les solutions déjà en place
+                    <div class="col-md-6">
+                        <h4>Phase Aval : Intégration et Gouvernance</h4>
+                        <div class="advantage-box os-advantage">
+                            <i class="fas fa-code-branch text-success"></i> **4. Audit et Intégration (DÉPLOYER)**
+                            <p class="small">**Pour l'OS :** Audit des licences et de la sécurité. **Pour le Propriétaire :** Signature du contrat (SLA) et intégration des API/connecteurs.</p>
                         </div>
-                        <div class="best-practice-item">
-                            <strong>2. Vérifier maturité et roadmap</strong> - S'assurer de la viabilité du projet
+                        <div class="advantage-box prop-advantage">
+                            <i class="fas fa-life-ring text-danger"></i> **5. Support et Maintenance (GARANTIR)**
+                            <p class="small">Mise en place du mécanisme de support : communauté/prestataire pour l'OS ou support contractuel éditeur pour le Propriétaire.</p>
                         </div>
-                        <div class="best-practice-item">
-                            <strong>3. Définir politique de contribution</strong> - Établir une gouvernance claire
-                        </div>
-                        <div class="best-practice-item">
-                            <strong>4. Automatiser mises à jour</strong> - Maintenir la sécurité et les fonctionnalités
-                        </div>
-                        <div class="best-practice-item">
-                            <strong>5. Audits réguliers sécurité</strong> - Prévenir les vulnérabilités
+                        <div class="advantage-box">
+                            <i class="fas fa-gavel text-secondary"></i> **6. Gestion du Cycle de Vie (GOUVERNER)**
+                            <p class="small">Définition de la politique de mise à jour, de la gestion de la dette technique (OS) ou des renouvellements de licence/évolution du Vendor Lock-in (Propriétaire).</p>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="tab-pane fade" id="makeorbuy" role="tabpanel" aria-labelledby="makeorbuy-tab">
+                <h2><i class="fas fa-handshake"></i> Make Or Buy (Open Source) : Le Choix Stratégique</h2>
+                <p class="lead">Dans le contexte de l'Open Source, le "Buy" (Acheter) est remplacé par le **"Leverage"** (Utiliser un existant) et le "Make" (Développer) est réservé aux besoins hyper-spécifiques.</p>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="advantage-box" style="border-left-color: #007bff; background-color: #e6f0ff;">
+                            <h4><i class="fas fa-tools"></i> 1. MAKE (Développement Interne)</h4>
+                            <p class="small">Développer une solution sur mesure. Justifié seulement si le besoin est unique et confère un avantage concurrentiel direct.</p>
+                            <ul>
+                                <li>**Avantage :** 100% aligné avec le métier, contrôle total de la propriété intellectuelle.</li>
+                                <li>**Risque :** TCO très élevé, dépendance aux développeurs internes (lock-in interne).</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="advantage-box os-advantage">
+                            <h4><i class="fas fa-code-branch"></i> 2. LEVERAGE (Open Source)</h4>
+                            <p class="small">Utiliser, adapter et potentiellement contribuer à une solution Open Source existante. C'est l'alternative moderne au Buy Propriétaire.</p>
+                            <ul>
+                                <li>**Avantage :** Coût initial faible, réversibilité, innovation communautaire.</li>
+                                <li>**Risque :** Nécessite des compétences pour l'intégration, dépendance à la maturité du projet OS.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="advantage-box prop-advantage">
+                            <h4><i class="fas fa-lock"></i> 3. BUY (Solution Propriétaire)</h4>
+                            <p class="small">Acquisition d'une licence pour un logiciel éditeur. Souvent choisi pour des fonctions standard avec besoin de support critique.</p>
+                            <ul>
+                                <li>**Avantage :** Support garanti par contrat (SLA), responsabilité de l'éditeur sur le produit.</li>
+                                <li>**Risque :** Vendor lock-in fort, coûts récurrents élevés, faible flexibilité.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <h4 class="mt-4"><i class="fas fa-rocket text-success"></i> Critères de Priorisation Open Source (Leverage)</h4>
+                <ul>
+                    <li>**Taux d'Adéquation Fonctionnelle :** Si l'OS répond à > 75% du besoin, privilégier le **Leverage**.</li>
+                    <li>**Disponibilité des Compétences :** Si l'équipe interne maîtrise la technologie OS, le **Leverage** est plus sûr.</li>
+                    <li>**Interopérabilité :** Si le système doit s'intégrer facilement avec d'autres outils via des standards, l'OS est supérieur.</li>
+                </ul>
+            </div>
+
+         <div class="tab-pane fade" id="risk" role="tabpanel" aria-labelledby="risk-tab">
+                <h2><i class="fas fa-shield-alt"></i> Risques Clés et Stratégies de Mitigation</h2>
+                <p class="lead">Chaque modèle (Open Source ou Propriétaire) présente des risques uniques qui doivent être anticipés et gérés par une stratégie de mitigation ciblée.</p>
+                
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="card os-advantage">
+                            <div class="card-header bg-success text-white">
+                                <h4><i class="fas fa-code-branch"></i> Risques Spécifiques à l'Open Source</h4>
+                            </div>
+                            <div class="card-body">
+                                <h5><i class="fas fa-exclamation-triangle"></i> 1. Risque de Maturité et de Fin de Vie (Dead Project)</h5>
+                                <p><strong>Description :</strong> Le projet Open Source stagne, n'est plus maintenu ou la communauté disparaît, laissant la solution vulnérable et sans évolution fonctionnelle. <br>
+                                <strong>Mitigation :</strong> Établir des critères de **MTE** (Maturité Technologique Évaluée) stricts. Identifier une **entreprise de support tierce** ou prévoir un plan de **Fork**.</p>
+
+                                <h5><i class="fas fa-gavel"></i> 2. Risque de Licence (Non-Conformité)</h5>
+                                <p><strong>Description :</strong> Utilisation d'un code sous licence contraignante (ex: GPL) qui peut obliger à publier les développements internes (contagion). <br>
+                                <strong>Mitigation :</strong> Mettre en place un **OSPO** (Open Source Program Office) ou un processus d'**audit de licence** systématique. Créer une *liste blanche* de licences autorisées.</p>
+
+                                <h5><i class="fas fa-bolt"></i> 3. Risque de Dette Technique</h5>
+                                <p><strong>Description :</strong> Les personnalisations internes rendent l'application des mises à jour de la communauté (patches de sécurité) difficiles ou impossibles. <br>
+                                <strong>Mitigation :</strong> **Contribuer "Upstream"** les correctifs ou isoler les personnalisations dans des modules séparés du cœur du code OS.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card prop-advantage">
+                            <div class="card-header bg-danger text-white">
+                                <h4><i class="fas fa-copyright"></i> Risques Spécifiques au Propriétaire</h4>
+                            </div>
+                            <div class="card-body">
+                                <h5><i class="fas fa-lock"></i> 4. Risque de Vendor Lock-in (Dépendance)</h5>
+                                <p><strong>Description :</strong> L'entreprise est captive de l'éditeur en raison de formats de données propriétaires, d'API fermées ou de l'absence de réversibilité des données. <br>
+                                <strong>Mitigation :</strong> Exiger des **clauses de réversibilité** au contrat. Utiliser des solutions intermédiaires (ETL) pour convertir les formats vers des **standards ouverts**.</p>
+
+                                <h5><i class="fas fa-hand-holding-usd"></i> 5. Risque Financier (Coûts & Augmentations)</h5>
+                                <p><strong>Description :</strong> Dépendance à la grille tarifaire de l'éditeur, qui peut augmenter les frais de licence ou de support de manière imprévue. <br>
+                                <strong>Mitigation :</strong> Négocier des **clauses de plafonnement** tarifaire à long terme. Évaluer le **TCO sur 5 à 10 ans** au lieu de se concentrer uniquement sur le coût de licence initial.</p>
+
+                                <h5><i class="fas fa-bug"></i> 6. Risque de Sécurité par l'Obscurité</h5>
+                                <p><strong>Description :</strong> Impossibilité d'auditer le code source soi-même. Dépendance totale à la réactivité de l'éditeur face aux failles critiques. <br>
+                                <strong>Mitigation :</strong> Exiger des **certifications de sécurité** tierces et des **garanties contractuelles** de temps de réponse aux failles (SLA de sécurité).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+			<div class="tab-pane fade" id="glossary" role="tabpanel" aria-labelledby="glossary-tab">
+                <h2><i class="fas fa-book-open"></i> Glossaire - Les 21 Mots-Clés</h2>
+                <p class="lead">Maîtriser ces termes est essentiel pour prendre une décision éclairée entre Open Source et Propriétaire.</p>
+                
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <h5 class="text-success"><i class="fas fa-code-branch"></i> Concepts Open Source & Technique</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong>1. TCO (Total Cost of Ownership) :</strong> Coût global du cycle de vie (acquisition, maintenance, support, mise à jour, formation).</li>
+                            <li class="list-group-item"><strong>2. Licence (Copyleft / Permissive) :</strong> Contrat régissant l'utilisation du code source (ex: GPL est *Copyleft*, MIT est *Permissive*).</li>
+                            <li class="list-group-item"><strong>3. Fork :</strong> Création d'un nouveau projet indépendant à partir du code source existant d'un projet Open Source.</li>
+                            <li class="list-group-item"><strong>4. Upstream :</strong> Contribuer ses modifications ou correctifs à la branche principale du projet communautaire (pour éviter la dette technique).</li>
+                            <li class="list-group-item"><strong>5. Roadmap :</strong> Feuille de route du développement futur du produit (publique en OS, confidentielle en Propriétaire).</li>
+                            <li class="list-group-item"><strong>6. POC (Proof of Concept) :</strong> Phase de test rapide pour valider la faisabilité technique et fonctionnelle d'une solution.</li>
+                            <li class="list-group-item"><strong>7. DevSecOps :</strong> Intégration de la Sécurité dans les processus de Développement et d'Opérations (critique en OS pour les mises à jour).</li>
+                            <li class="list-group-item"><strong>8. Interopérabilité :</strong> Capacité du système à communiquer et échanger des données avec d'autres systèmes (facilitée par les standards ouverts de l'OS).</li>
+                            <li class="list-group-item"><strong>9. Communauté :</strong> Ensemble des développeurs, utilisateurs et entreprises qui contribuent à la vie et à l'évolution d'un projet Open Source.</li>
+                            <li class="list-group-item"><strong>10. Code Auditabilité :</strong> Capacité à inspecter le code source pour y détecter des failles de sécurité (point fort de l'Open Source).</li>
+                            <li class="list-group-item"><strong>11. MTE (Maturité Technologique Évaluée) :</strong> Mesure de la stabilité, de l'adoption et de la pérennité d'une technologie.</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="text-danger"><i class="fas fa-gavel"></i> Concepts Propriétaire & Stratégique</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong>12. SLA (Service Level Agreement) :</strong> Engagement contractuel de l'éditeur Propriétaire sur le temps de réponse et la disponibilité du support.</li>
+                            <li class="list-group-item"><strong>13. Vendor Lock-in :</strong> Dépendance forte à un fournisseur unique, rendant la migration vers une autre solution coûteuse ou impossible.</li>
+                            <li class="list-group-item"><strong>14. Buy :</strong> Stratégie d'acquisition d'une licence logicielle auprès d'un éditeur Propriétaire.</li>
+                            <li class="list-group-item"><strong>15. Make :</strong> Stratégie de développement d'une solution en interne, sur mesure.</li>
+                            <li class="list-group-item"><strong>16. Leverage :</strong> Stratégie d'utilisation et d'adaptation d'une solution Open Source existante (alternative moderne au Buy).</li>
+                            <li class="list-group-item"><strong>17. Souveraineté des Données :</strong> Maîtrise complète du lieu d'hébergement et des lois applicables aux données (favorisé par l'auto-hébergement OS).</li>
+                            <li class="list-group-item"><strong>18. Réversibilité :</strong> Facilité à migrer les données et les processus hors de la solution actuelle vers une autre, sans perte majeure.</li>
+                            <li class="list-group-item"><strong>19. Coût de Licence :</strong> Frais d'acquisition initiaux ou récurrents (abonnement) pour l'utilisation d'un logiciel Propriétaire.</li>
+                            <li class="list-group-item"><strong>20. Code Obscurité :</strong> Fait de ne pas pouvoir accéder au code source d'une solution Propriétaire (Sécurité par l'obscurité).</li>
+                            <li class="list-group-item"><strong>21. OSPO (Open Source Program Office) :</strong> Bureau interne centralisant la gouvernance, la conformité et la stratégie Open Source au sein de l'entreprise.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+			
+			
         </div>
-        
         <div class="footer">
-            <p>Évaluateur Open Source vs Propriétaire - Outil d'aide à la décision stratégique</p>
-            <p class="small">Les recommandations sont basées sur une analyse multicritère et doivent être adaptées à votre contexte spécifique.</p>
+            <p>Évaluateur Open Source vs. Propriétaire - Outil d'aide à la décision stratégique.</p>
+            <p class="small">Les recommandations sont basées sur vos pondérations et doivent être adaptées à votre contexte spécifique.</p>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Mise à jour des valeurs des sliders
-        document.querySelectorAll('.form-range').forEach(slider => {
-            const valueDisplay = document.getElementById(slider.id.replace('Slider', 'Value'));
-            
-            slider.addEventListener('input', function() {
-                valueDisplay.textContent = this.value;
-                updateScores();
-            });
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Mise à jour des valeurs des sliders en temps réel
+    document.querySelectorAll('.form-range').forEach(slider => {
+        const valueDisplay = document.getElementById(slider.id.replace('Slider', 'Value'));
+
+        slider.addEventListener('input', function() {
+            valueDisplay.textContent = this.value;
+            updateScores();
         });
-        
-        // Fonction pour mettre à jour les scores en temps réel
-        function updateScores() {
-            // Coefficients pour chaque critère (poids Open Source vs Propriétaire)
-            const coefficients = {
-                budget: { openSource: 5, proprietary: 2 },
-                flexibility: { openSource: 5, proprietary: 3 },
-                support: { openSource: 3, proprietary: 5 },
-                security: { openSource: 3, proprietary: 5 },
-                innovation: { openSource: 5, proprietary: 3 },
-                lockin: { openSource: 5, proprietary: 2 },
-                interoperability: { openSource: 5, proprietary: 3 },
-                skills: { openSource: 4, proprietary: 3 }
-            };
-            
-            let openSourceScore = 0;
-            let proprietaryScore = 0;
-            
-            // Calcul des scores pour chaque critère
-            for (const [criterion, coeff] of Object.entries(coefficients)) {
-                const sliderValue = parseInt(document.getElementById(criterion + 'Slider').value);
+    });
+
+    // Fonction pour mettre à jour les scores en temps réel
+    function updateScores() {
+        // COEFFICIENTS RÉVISÉS (V5.1) : Plus d'avantages au Propriétaire pour les critères critiques
+        const coefficients = {
+            budget: { openSource: 3, proprietary: 2 },         
+            timetomarket: { openSource: 3, proprietary: 2 },   
+            flexibility: { openSource: 4, proprietary: 1 },    
+            support: { openSource: 1, proprietary: 5 },        // Avantage Prop pour SLA contractuel
+            community: { openSource: 4, proprietary: 1 },      
+            security: { openSource: 1, proprietary: 5 },       // Avantage Prop pour garantie éditeur/conformité
+            lockin: { openSource: 4, proprietary: 1 },         
+            sovereignty: { openSource: 3, proprietary: 2 },    
+            reversibility: { openSource: 4, proprietary: 1 }   
+        };
+
+        let openSourceScore = 0;
+        let proprietaryScore = 0;
+
+        // Calcul des scores pour chaque critère
+        for (const [criterion, coeff] of Object.entries(coefficients)) {
+            const sliderElement = document.getElementById(criterion + 'Slider');
+            if (sliderElement) {
+                const sliderValue = parseInt(sliderElement.value);
                 openSourceScore += coeff.openSource * sliderValue;
                 proprietaryScore += coeff.proprietary * sliderValue;
             }
-            
-            // Affichage des scores
-            document.getElementById('openSourceScore').textContent = openSourceScore;
-            document.getElementById('proprietaryScore').textContent = proprietaryScore;
         }
+
+        // Affichage des scores
+        document.getElementById('openSourceScore').textContent = openSourceScore;
+        document.getElementById('proprietaryScore').textContent = proprietaryScore;
         
-        // Calcul de la recommandation finale
-        document.getElementById('calculateBtn').addEventListener('click', function() {
-            updateScores();
-            
-            const openSourceScore = parseInt(document.getElementById('openSourceScore').textContent);
-            const proprietaryScore = parseInt(document.getElementById('proprietaryScore').textContent);
-            
-            document.getElementById('finalOpenSourceScore').textContent = openSourceScore;
-            document.getElementById('finalProprietaryScore').textContent = proprietaryScore;
-            
-            let recommendation = '';
-            let explanation = '';
-            let recommendationClass = '';
-            
-            if (openSourceScore > proprietaryScore + 20) {
-                recommendation = 'Open Source recommandé';
-                explanation = 'Vos besoins favorisent les solutions Open Source. Assurez-vous d\'avoir une équipe formée et prévoyez un support externe si nécessaire.';
-                recommendationClass = 'open-source-recommendation';
-            } else if (proprietaryScore > openSourceScore + 20) {
-                recommendation = 'Solution propriétaire recommandée';
-                explanation = 'Vos critères prioritaires (SLA, sécurité) favorisent les solutions propriétaires. Vérifiez les possibilités d\'intégration et les coûts à long terme.';
-                recommendationClass = 'proprietary-recommendation';
-            } else {
-                recommendation = 'Approche hybride recommandée';
-                explanation = 'Vos besoins sont équilibrés. Une approche hybride (Open Source pour la flexibilité, propriétaire pour les composants critiques) est probablement optimale.';
-                recommendationClass = 'hybrid-recommendation';
-            }
-            
-            document.getElementById('recommendationText').textContent = recommendation;
-            document.getElementById('recommendationText').className = 'recommendation ' + recommendationClass;
-            document.getElementById('recommendationExplanation').textContent = explanation;
-        });
-        
-        // Initialisation
-        updateScores();
-    </script>
+        // Si le bouton de calcul a déjà été cliqué, mettre à jour le résultat final immédiatement
+        if(document.getElementById('calculateBtn').classList.contains('calculated')) {
+            calculateRecommendation(openSourceScore, proprietaryScore);
+        }
+    }
+
+    // Fonction de calcul de la recommandation (Algorithme conservé)
+    function calculateRecommendation(openSourceScore, proprietaryScore) {
+        document.getElementById('finalOpenSourceScore').textContent = openSourceScore;
+        document.getElementById('finalProprietaryScore').textContent = proprietaryScore;
+
+        let recommendation = '';
+        let explanation = '';
+        let recommendationClass = '';
+
+        // Seuil de 20 conservé pour garantir une distinction claire entre les trois cas
+        const threshold = 20; 
+
+        if (openSourceScore > proprietaryScore + threshold) {
+            recommendation = 'Open Source Fortement Recommandé';
+            explanation = 'Vos priorités (Flexibilité, TCO, Communauté, Réversibilité) favorisent très nettement l\'Open Source. Concentrez-vous sur la validation de la maturité et du support de la solution.';
+            recommendationClass = 'open-source-recommendation';
+        } else if (proprietaryScore > openSourceScore + threshold) {
+            recommendation = 'Solution Propriétaire Fortement Recommandée';
+            explanation = 'Vos critères critiques (SLA, Support Contractuel) dépassent largement les autres facteurs. Le choix d\'une solution propriétaire est justifié. Évaluez le risque de Vendor Lock-in.';
+            recommendationClass = 'proprietary-recommendation';
+        } else {
+            recommendation = 'Approche Hybride Recommandée';
+            explanation = 'Les scores sont équilibrés. L\'approche la plus prudente est l\'Hybride : utiliser l\'Open Source pour les composants flexibles/standard et le Propriétaire pour les besoins critiques nécessitant un SLA.';
+            recommendationClass = 'hybrid-recommendation';
+        }
+
+        document.getElementById('recommendationText').textContent = recommendation;
+        document.getElementById('recommendationText').className = 'recommendation ' + recommendationClass;
+        document.getElementById('recommendationExplanation').textContent = explanation;
+    }
+
+    // Gestion du clic sur le bouton de calcul final
+    document.getElementById('calculateBtn').addEventListener('click', function() {
+        updateScores(); 
+        const openSourceScore = parseInt(document.getElementById('openSourceScore').textContent);
+        const proprietaryScore = parseInt(document.getElementById('proprietaryScore').textContent);
+        calculateRecommendation(openSourceScore, proprietaryScore);
+        this.classList.add('calculated'); 
+    });
+
+    // Initialisation
+    updateScores();
+</script>
 </body>
 </html>

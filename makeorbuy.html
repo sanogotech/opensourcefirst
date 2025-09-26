@@ -100,6 +100,16 @@
             min-width: 30px;
             text-align: center;
         }
+        
+        .example-card .card-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .example-card h5 {
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -114,69 +124,153 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8">
-                <div class="card criteria-card">
-                    <div class="card-header bg-primary text-white">
-                        <h3 class="card-title mb-0"><i class="fas fa-sliders-h"></i> Pondération des Critères de Décision</h3>
-                    </div>
-                    <div class="card-body">
-                        <p class="text-muted">Évaluez l'importance de chaque critère pour votre projet (1 = faible, 5 = très important).</p>
+                <!-- Onglets de navigation -->
+                <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="evaluation-tab" data-bs-toggle="tab" data-bs-target="#evaluation" type="button" role="tab" aria-controls="evaluation" aria-selected="true"><i class="fas fa-sliders-h"></i> Évaluation</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="characteristics-tab" data-bs-toggle="tab" data-bs-target="#characteristics" type="button" role="tab" aria-controls="characteristics" aria-selected="false"><i class="fas fa-chart-line"></i> Caractéristiques</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="annex-tab" data-bs-toggle="tab" data-bs-target="#annex" type="button" role="tab" aria-controls="annex" aria-selected="false"><i class="fas fa-magic"></i> Annexe</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="glossary-tab" data-bs-toggle="tab" data-bs-target="#glossary" type="button" role="tab" aria-controls="glossary" aria-selected="false"><i class="fas fa-book-open"></i> Glossaire</button>
+                    </li>
+                </ul>
 
-                        <div class="slider-container">
-                            <div class="slider-label">Spécificité du Besoin (Unique vs Standard)</div>
-                            <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="specificitySlider"></div>
-                            <div class="slider-value" id="specificityValue">3</div>
-                        </div>
-
-                        <div class="slider-container">
-                            <div class="slider-label">Délai de Mise en Œuvre (Time-to-Market)</div>
-                            <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="timetomarketSlider"></div>
-                            <div class="slider-value" id="timetomarketValue">3</div>
-                        </div>
-
-                        <div class="slider-container">
-                            <div class="slider-label">Contrôle Total (IP, Évolution)</div>
-                            <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="controlSlider"></div>
-                            <div class="slider-value" id="controlValue">3</div>
-                        </div>
-
-                        <div class="slider-container">
-                            <div class="slider-label">Coût Total de Possession (TCO)</div>
-                            <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="tcoSlider"></div>
-                            <div class="slider-value" id="tcoValue">3</div>
-                        </div>
-
-                        <div class="slider-container">
-                            <div class="slider-label">Compétences Internes Disponibles</div>
-                            <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="skillsSlider"></div>
-                            <div class="slider-value" id="skillsValue">3</div>
-                        </div>
-
-                        <div class="mt-4">
-                            <button class="btn btn-primary btn-lg w-100" id="calculateBtn">
-                                <i class="fas fa-calculator"></i> Calculer la recommandation
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card my-4">
-                    <div class="card-header bg-info text-white">
-                        <h3 class="card-title mb-0"><i class="fas fa-chart-line"></i> Caractéristiques de chaque modèle</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="row text-center">
-                            <div class="col-md-6 mb-3">
-                                <h4 class="make-recommendation">Make (Développer)</h4>
-                                <ul class="list-group list-group-flush text-start">
-                                    <li class="list-group-item"><strong>Avantages :</strong> Contrôle total, alignement parfait avec le métier, propriété intellectuelle.</li>
-                                    <li class="list-group-item"><strong>Inconvénients :</strong> Coût et délai élevés, forte dépendance interne.</li>
-                                </ul>
+                <!-- Contenu des onglets -->
+                <div class="tab-content" id="myTabContent">
+                    <!-- Onglet 1: Évaluation -->
+                    <div class="tab-pane fade show active" id="evaluation" role="tabpanel" aria-labelledby="evaluation-tab">
+                        <div class="card criteria-card mt-4">
+                            <div class="card-header bg-primary text-white">
+                                <h3 class="card-title mb-0"><i class="fas fa-sliders-h"></i> Pondération des Critères de Décision</h3>
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <h4 class="buy-recommendation">Buy / Leverage (Acquérir)</h4>
-                                <ul class="list-group list-group-flush text-start">
-                                    <li class="list-group-item"><strong>Avantages :</strong> Rapide à déployer, support et documentation existants, TCO connu.</li>
-                                    <li class="list-group-item"><strong>Inconvénients :</strong> Moins de flexibilité, dépendance à un tiers, risque de Vendor Lock-in.</li>
+                            <div class="card-body">
+                                <p class="text-muted">Évaluez l'importance de chaque critère pour votre projet (1 = faible, 5 = très important).</p>
+
+                                <div class="slider-container">
+                                    <div class="slider-label">Spécificité du Besoin (Unique vs Standard)</div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="specificitySlider"></div>
+                                    <div class="slider-value" id="specificityValue">3</div>
+                                </div>
+
+                                <div class="slider-container">
+                                    <div class="slider-label">Délai de Mise en Œuvre (Time-to-Market)</div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="timetomarketSlider"></div>
+                                    <div class="slider-value" id="timetomarketValue">3</div>
+                                </div>
+
+                                <div class="slider-container">
+                                    <div class="slider-label">Contrôle Total (IP, Évolution)</div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="controlSlider"></div>
+                                    <div class="slider-value" id="controlValue">3</div>
+                                </div>
+
+                                <div class="slider-container">
+                                    <div class="slider-label">Coût Total de Possession (TCO)</div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="tcoSlider"></div>
+                                    <div class="slider-value" id="tcoValue">3</div>
+                                </div>
+
+                                <div class="slider-container">
+                                    <div class="slider-label">Compétences Internes Disponibles</div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="skillsSlider"></div>
+                                    <div class="slider-value" id="skillsValue">3</div>
+                                </div>
+                                <div class="slider-container">
+                                    <div class="slider-label">Gestion des Risques</div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="riskSlider"></div>
+                                    <div class="slider-value" id="riskValue">3</div>
+                                </div>
+
+                                <div class="slider-container">
+                                    <div class="slider-label">Alignement Stratégique</div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="strategicSlider"></div>
+                                    <div class="slider-value" id="strategicValue">3</div>
+                                </div>
+
+                                <div class="slider-container">
+                                    <div class="slider-label">Maintenabilité</div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="maintainabilitySlider"></div>
+                                    <div class="slider-value" id="maintainabilityValue">3</div>
+                                </div>
+
+                                <div class="mt-4">
+                                    <button class="btn btn-primary btn-lg w-100" id="calculateBtn">
+                                        <i class="fas fa-calculator"></i> Calculer la recommandation
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Onglet 2: Caractéristiques -->
+                    <div class="tab-pane fade" id="characteristics" role="tabpanel" aria-labelledby="characteristics-tab">
+                        <div class="card my-4">
+                            <div class="card-header bg-info text-white">
+                                <h3 class="card-title mb-0"><i class="fas fa-chart-line"></i> Caractéristiques de chaque modèle</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row text-center">
+                                    <div class="col-md-6 mb-3">
+                                        <h4 class="make-recommendation">Make (Développer)</h4>
+                                        <ul class="list-group list-group-flush text-start">
+                                            <li class="list-group-item"><strong>Avantages :</strong> Contrôle total, alignement parfait avec le métier, propriété intellectuelle.</li>
+                                            <li class="list-group-item"><strong>Inconvénients :</strong> Coût et délai élevés, forte dépendance interne.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <h4 class="buy-recommendation">Buy / Leverage (Acquérir)</h4>
+                                        <ul class="list-group list-group-flush text-start">
+                                            <li class="list-group-item"><strong>Avantages :</strong> Rapide à déployer, support et documentation existants, TCO connu.</li>
+                                            <li class="list-group-item"><strong>Inconvénients :</strong> Moins de flexibilité, dépendance à un tiers, risque de Vendor Lock-in.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Onglet 3: Annexe -->
+                    <div class="tab-pane fade" id="annex" role="tabpanel" aria-labelledby="annex-tab">
+                        <div class="card my-4 example-card">
+                            <div class="card-header bg-secondary text-white">
+                                <h3 class="card-title mb-0"><i class="fas fa-magic"></i> Annexe : Exemples de Pondération</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h5 class="make-recommendation">Exemple 1 : Priorité au DÉVELOPPEMENT (Make)</h5>
+                                        <p class="small text-muted">Pour un projet stratégique, très spécifique et sur le long terme.</p>
+                                        <button class="btn btn-outline-primary btn-sm w-100" onclick="applyExample('make')"><i class="fas fa-arrow-alt-circle-right"></i> Appliquer cet exemple</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5 class="buy-recommendation">Exemple 2 : Priorité à l'ACQUISITION (Buy)</h5>
+                                        <p class="small text-muted">Pour un besoin standard nécessitant rapidité et coûts maîtrisés.</p>
+                                        <button class="btn btn-outline-success btn-sm w-100" onclick="applyExample('buy')"><i class="fas fa-arrow-alt-circle-right"></i> Appliquer cet exemple</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Onglet 4: Glossaire -->
+                    <div class="tab-pane fade" id="glossary" role="tabpanel" aria-labelledby="glossary-tab">
+                        <div class="card my-4">
+                            <div class="card-header bg-dark text-white">
+                                <h3 class="card-title mb-0"><i class="fas fa-book-open"></i> Glossaire des Termes Clés</h3>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item"><strong>Make :</strong> Stratégie de développement interne d'une solution logicielle, sur mesure.</li>
+                                    <li class="list-group-item"><strong>Buy :</strong> Stratégie d'acquisition d'une solution logicielle existante sur le marché.</li>
+                                    <li class="list-group-item"><strong>Leverage :</strong> Utilisation et adaptation d'une solution existante (souvent Open Source) comme base.</li>
+                                    <li class="list-group-item"><strong>TCO (Total Cost of Ownership) :</strong> Coût total de possession, incluant l'acquisition, la maintenance, le support, etc.</li>
+                                    <li class="list-group-item"><strong>Time-to-Market :</strong> Délai nécessaire pour mettre une solution fonctionnelle sur le marché ou à disposition des utilisateurs.</li>
+                                    <li class="list-group-item"><strong>Vendor Lock-in :</strong> Dépendance à un fournisseur, rendant la migration vers une autre solution coûteuse.</li>
                                 </ul>
                             </div>
                         </div>
@@ -218,7 +312,10 @@
                 timetomarket: { make: 1, buy: 5 },
                 control: { make: 5, buy: 1 },
                 tco: { make: 1, buy: 5 },
-                skills: { make: 4, buy: 2 }
+                skills: { make: 4, buy: 2 },
+                risk: { make: 3, buy: 4 },
+                strategic: { make: 5, buy: 2 },
+                maintainability: { make: 4, buy: 3 }
             };
 
             let makeScore = 0;
@@ -237,13 +334,51 @@
             document.getElementById('finalBuyScore').textContent = buyScore;
         }
 
+        function applyExample(type) {
+            const makeExample = {
+                specificity: 5,
+                timetomarket: 1,
+                control: 5,
+                tco: 2,
+                skills: 4,
+                risk: 3,
+                strategic: 5,
+                maintainability: 5
+            };
+            const buyExample = {
+                specificity: 1,
+                timetomarket: 5,
+                control: 1,
+                tco: 5,
+                skills: 1,
+                risk: 4,
+                strategic: 2,
+                maintainability: 3
+            };
+
+            const exampleData = type === 'make' ? makeExample : buyExample;
+            for (const [criterion, value] of Object.entries(exampleData)) {
+                const slider = document.getElementById(criterion + 'Slider');
+                if (slider) {
+                    slider.value = value;
+                    document.getElementById(criterion + 'Value').textContent = value;
+                }
+            }
+            updateScores();
+            // Simuler le clic sur le bouton de calcul pour montrer le résultat
+            document.getElementById('calculateBtn').click();
+        }
+
         document.getElementById('calculateBtn').addEventListener('click', function() {
             const coefficients = {
                 specificity: { make: 5, buy: 1 },
                 timetomarket: { make: 1, buy: 5 },
                 control: { make: 5, buy: 1 },
                 tco: { make: 1, buy: 5 },
-                skills: { make: 4, buy: 2 }
+                skills: { make: 4, buy: 2 },
+                risk: { make: 3, buy: 4 },
+                strategic: { make: 5, buy: 2 },
+                maintainability: { make: 4, buy: 3 }
             };
 
             let makeScore = 0;

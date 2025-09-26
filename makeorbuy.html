@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrice Make Or Buy</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --make-color: #0d6efd;      /* Bleu pour Make (Développer) */
+            --buy-color: #20c997;       /* Vert pour Buy (Acquérir) */
+            --undecided-color: #6c757d; /* Gris pour Indécis */
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            padding-bottom: 50px;
+        }
+
+        .header-section {
+            background: linear-gradient(45deg, #0d47a1, #1976d2, #42a5f5);
+            color: white;
+            padding: 40px 0;
+            border-radius: 0 0 25px 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            margin-bottom: 40px;
+        }
+
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: none;
+            margin-bottom: 20px;
+        }
+
+        .score-section {
+            background: linear-gradient(45deg, #4c2975, #6a1b9a, #ab47bc);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+        
+        .score-display {
+            font-size: 3rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .make-score {
+            color: var(--make-color);
+        }
+
+        .buy-score {
+            color: var(--buy-color);
+        }
+
+        .recommendation {
+            font-size: 1.5rem;
+            text-align: center;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        .make-recommendation {
+            color: var(--make-color);
+        }
+
+        .buy-recommendation {
+            color: var(--buy-color);
+        }
+
+        .undecided-recommendation {
+            color: var(--undecided-color);
+        }
+
+        .slider-container {
+            padding: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .slider-wrapper {
+            flex: 1;
+        }
+
+        .slider-label {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .slider-value {
+            font-weight: bold;
+            color: #495057;
+            min-width: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-section">
+        <div class="container">
+            <h1 class="display-4 fw-bold text-center"><i class="fas fa-hand-holding-box"></i> Matrice Make Or Buy</h1>
+            <p class="lead text-center">Évaluation initiale du modèle de développement : Interne ou Existant ?</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card criteria-card">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title mb-0"><i class="fas fa-sliders-h"></i> Pondération des Critères de Décision</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted">Évaluez l'importance de chaque critère pour votre projet (1 = faible, 5 = très important).</p>
+
+                        <div class="slider-container">
+                            <div class="slider-label">Spécificité du Besoin (Unique vs Standard)</div>
+                            <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="specificitySlider"></div>
+                            <div class="slider-value" id="specificityValue">3</div>
+                        </div>
+
+                        <div class="slider-container">
+                            <div class="slider-label">Délai de Mise en Œuvre (Time-to-Market)</div>
+                            <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="timetomarketSlider"></div>
+                            <div class="slider-value" id="timetomarketValue">3</div>
+                        </div>
+
+                        <div class="slider-container">
+                            <div class="slider-label">Contrôle Total (IP, Évolution)</div>
+                            <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="controlSlider"></div>
+                            <div class="slider-value" id="controlValue">3</div>
+                        </div>
+
+                        <div class="slider-container">
+                            <div class="slider-label">Coût Total de Possession (TCO)</div>
+                            <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="tcoSlider"></div>
+                            <div class="slider-value" id="tcoValue">3</div>
+                        </div>
+
+                        <div class="slider-container">
+                            <div class="slider-label">Compétences Internes Disponibles</div>
+                            <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="skillsSlider"></div>
+                            <div class="slider-value" id="skillsValue">3</div>
+                        </div>
+
+                        <div class="mt-4">
+                            <button class="btn btn-primary btn-lg w-100" id="calculateBtn">
+                                <i class="fas fa-calculator"></i> Calculer la recommandation
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card my-4">
+                    <div class="card-header bg-info text-white">
+                        <h3 class="card-title mb-0"><i class="fas fa-chart-line"></i> Caractéristiques de chaque modèle</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-md-6 mb-3">
+                                <h4 class="make-recommendation">Make (Développer)</h4>
+                                <ul class="list-group list-group-flush text-start">
+                                    <li class="list-group-item"><strong>Avantages :</strong> Contrôle total, alignement parfait avec le métier, propriété intellectuelle.</li>
+                                    <li class="list-group-item"><strong>Inconvénients :</strong> Coût et délai élevés, forte dépendance interne.</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <h4 class="buy-recommendation">Buy / Leverage (Acquérir)</h4>
+                                <ul class="list-group list-group-flush text-start">
+                                    <li class="list-group-item"><strong>Avantages :</strong> Rapide à déployer, support et documentation existants, TCO connu.</li>
+                                    <li class="list-group-item"><strong>Inconvénients :</strong> Moins de flexibilité, dépendance à un tiers, risque de Vendor Lock-in.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="score-section">
+                    <h3><i class="fas fa-chart-bar"></i> Résultat de l'évaluation</h3>
+                    <div class="score-display">
+                        <span class="make-score" id="finalMakeScore">0</span> -
+                        <span class="buy-score" id="finalBuyScore">0</span>
+                    </div>
+                    <div class="recommendation" id="recommendationText">
+                        Ajustez les critères et calculez pour voir la recommandation
+                    </div>
+                    <div id="recommendationDetails">
+                        <p id="recommendationExplanation" class="text-center">Le score le plus élevé indique le modèle le plus adapté à vos priorités.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.querySelectorAll('.form-range').forEach(slider => {
+            const valueDisplay = document.getElementById(slider.id.replace('Slider', 'Value'));
+            slider.addEventListener('input', function() {
+                valueDisplay.textContent = this.value;
+                updateScores();
+            });
+        });
+
+        function updateScores() {
+            const coefficients = {
+                specificity: { make: 5, buy: 1 },
+                timetomarket: { make: 1, buy: 5 },
+                control: { make: 5, buy: 1 },
+                tco: { make: 1, buy: 5 },
+                skills: { make: 4, buy: 2 }
+            };
+
+            let makeScore = 0;
+            let buyScore = 0;
+
+            for (const [criterion, coeff] of Object.entries(coefficients)) {
+                const sliderElement = document.getElementById(criterion + 'Slider');
+                if (sliderElement) {
+                    const sliderValue = parseInt(sliderElement.value);
+                    makeScore += coeff.make * sliderValue;
+                    buyScore += coeff.buy * sliderValue;
+                }
+            }
+            
+            document.getElementById('finalMakeScore').textContent = makeScore;
+            document.getElementById('finalBuyScore').textContent = buyScore;
+        }
+
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            const coefficients = {
+                specificity: { make: 5, buy: 1 },
+                timetomarket: { make: 1, buy: 5 },
+                control: { make: 5, buy: 1 },
+                tco: { make: 1, buy: 5 },
+                skills: { make: 4, buy: 2 }
+            };
+
+            let makeScore = 0;
+            let buyScore = 0;
+
+            for (const [criterion, coeff] of Object.entries(coefficients)) {
+                const sliderValue = parseInt(document.getElementById(criterion + 'Slider').value);
+                makeScore += coeff.make * sliderValue;
+                buyScore += coeff.buy * sliderValue;
+            }
+
+            let recommendation = '';
+            let explanation = '';
+            let recommendationClass = '';
+            const threshold = 15;
+
+            if (makeScore > buyScore + threshold) {
+                recommendation = 'Fortement recommandé de DÉVELOPPER (Make)';
+                explanation = 'Vos besoins sont uniques et le contrôle total est une priorité. Le développement en interne est le meilleur modèle.';
+                recommendationClass = 'make-recommendation';
+            } else if (buyScore > makeScore + threshold) {
+                recommendation = 'Fortement recommandé d\'ACQUÉRIR (Buy/Leverage)';
+                explanation = 'La rapidité, les coûts maîtrisés et l\'existence d\'une solution standard sont prioritaires. Cherchez une solution existante.';
+                recommendationClass = 'buy-recommendation';
+            } else {
+                recommendation = 'Approche Hybride ou Indécis';
+                explanation = 'Les scores sont équilibrés. La décision nécessite une analyse plus approfondie. Une approche hybride (développement de modules spécifiques sur une base existante) peut être envisagée.';
+                recommendationClass = 'undecided-recommendation';
+            }
+
+            document.getElementById('recommendationText').textContent = recommendation;
+            document.getElementById('recommendationText').className = 'recommendation ' + recommendationClass;
+            document.getElementById('recommendationExplanation').textContent = explanation;
+        });
+
+        // Initialisation des scores au chargement de la page
+        updateScores();
+    </script>
+</body>
+</html>

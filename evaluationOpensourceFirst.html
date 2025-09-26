@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Évaluateur Open Source vs Propriétaire</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --open-source-color: #28a745;
+            --proprietary-color: #dc3545;
+            --hybrid-color: #ffc107;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            padding-bottom: 50px;
+        }
+        
+        .header-section {
+            background: linear-gradient(90deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: white;
+            padding: 40px 0;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: none;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .criteria-card {
+            background: white;
+        }
+        
+        .comparison-table {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .comparison-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        .score-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+        
+        .score-display {
+            font-size: 3rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .open-source-score {
+            color: var(--open-source-color);
+        }
+        
+        .proprietary-score {
+            color: var(--proprietary-color);
+        }
+        
+        .recommendation {
+            font-size: 1.5rem;
+            text-align: center;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        
+        .open-source-recommendation {
+            color: var(--open-source-color);
+        }
+        
+        .proprietary-recommendation {
+            color: var(--proprietary-color);
+        }
+        
+        .hybrid-recommendation {
+            color: var(--hybrid-color);
+        }
+        
+        .slider-container {
+            padding: 15px 0;
+        }
+        
+        .slider-label {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .form-range {
+            width: 100%;
+        }
+        
+        .tool-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .tool-item {
+            padding: 10px 15px;
+            border-left: 4px solid var(--open-source-color);
+            margin-bottom: 10px;
+            background-color: #f8f9fa;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .maturity-level {
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .level-1 { background: linear-gradient(90deg, #ff9a9e, #fad0c4); }
+        .level-2 { background: linear-gradient(90deg, #a1c4fd, #c2e9fb); }
+        .level-3 { background: linear-gradient(90deg, #ffecd2, #fcb69f); }
+        .level-4 { background: linear-gradient(90deg, #84fab0, #8fd3f4); }
+        .level-5 { background: linear-gradient(90deg, #667eea, #764ba2); }
+        
+        .best-practice-item {
+            padding: 10px;
+            border-left: 4px solid #28a745;
+            margin-bottom: 10px;
+            background-color: #f8f9fa;
+        }
+        
+        .badge-custom {
+            font-size: 0.8rem;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .slider-value {
+            font-weight: bold;
+            color: #495057;
+            min-width: 30px;
+            text-align: center;
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .slider-wrapper {
+            flex: 1;
+        }
+        
+        @media (max-width: 768px) {
+            .slider-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            
+            .slider-value {
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-4 fw-bold"><i class="fas fa-balance-scale"></i> Évaluateur Open Source vs Propriétaire</h1>
+                    <p class="lead">Outil d'aide à la décision stratégique pour choisir entre solutions Open Source et propriétaires</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <div class="bg-white text-dark p-3 rounded shadow-sm d-inline-block">
+                        <h5 class="mb-1">Score de recommandation</h5>
+                        <div class="d-flex justify-content-center">
+                            <span class="open-source-score me-3"><i class="fas fa-code-branch"></i> Open Source: <span id="openSourceScore">0</span></span>
+                            <span class="proprietary-score"><i class="fas fa-copyright"></i> Propriétaire: <span id="proprietaryScore">0</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card criteria-card">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title mb-0"><i class="fas fa-sliders-h"></i> Critères d'évaluation</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted">Évaluez chaque critère sur une échelle de 1 à 5 (1 = faible importance, 5 = très important)</p>
+                        
+                        <div class="slider-container">
+                            <div class="slider-label">Budget / Coût</div>
+                            <div class="slider-wrapper">
+                                <input type="range" class="form-range" min="1" max="5" value="3" id="budgetSlider">
+                            </div>
+                            <div class="slider-value" id="budgetValue">3</div>
+                        </div>
+                        
+                        <div class="slider-container">
+                            <div class="slider-label">Flexibilité / Personnalisation</div>
+                            <div class="slider-wrapper">
+                                <input type="range" class="form-range" min="1" max="5" value="3" id="flexibilitySlider">
+                            </div>
+                            <div class="slider-value" id="flexibilityValue">3</div>
+                        </div>
+                        
+                        <div class="slider-container">
+                            <div class="slider-label">Support / SLA</div>
+                            <div class="slider-wrapper">
+                                <input type="range" class="form-range" min="1" max="5" value="3" id="supportSlider">
+                            </div>
+                            <div class="slider-value" id="supportValue">3</div>
+                        </div>
+                        
+                        <div class="slider-container">
+                            <div class="slider-label">Sécurité / Conformité</div>
+                            <div class="slider-wrapper">
+                                <input type="range" class="form-range" min="1" max="5" value="3" id="securitySlider">
+                            </div>
+                            <div class="slider-value" id="securityValue">3</div>
+                        </div>
+                        
+                        <div class="slider-container">
+                            <div class="slider-label">Innovation</div>
+                            <div class="slider-wrapper">
+                                <input type="range" class="form-range" min="1" max="5" value="3" id="innovationSlider">
+                            </div>
+                            <div class="slider-value" id="innovationValue">3</div>
+                        </div>
+                        
+                        <div class="slider-container">
+                            <div class="slider-label">Vendor Lock-in</div>
+                            <div class="slider-wrapper">
+                                <input type="range" class="form-range" min="1" max="5" value="3" id="lockinSlider">
+                            </div>
+                            <div class="slider-value" id="lockinValue">3</div>
+                        </div>
+                        
+                        <div class="slider-container">
+                            <div class="slider-label">Interopérabilité</div>
+                            <div class="slider-wrapper">
+                                <input type="range" class="form-range" min="1" max="5" value="3" id="interoperabilitySlider">
+                            </div>
+                            <div class="slider-value" id="interoperabilityValue">3</div>
+                        </div>
+                        
+                        <div class="slider-container">
+                            <div class="slider-label">Compétence interne</div>
+                            <div class="slider-wrapper">
+                                <input type="range" class="form-range" min="1" max="5" value="3" id="skillsSlider">
+                            </div>
+                            <div class="slider-value" id="skillsValue">3</div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <button class="btn btn-primary btn-lg w-100" id="calculateBtn">
+                                <i class="fas fa-calculator"></i> Calculer la recommandation
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card comparison-table">
+                    <div class="card-header bg-info text-white">
+                        <h3 class="card-title mb-0"><i class="fas fa-table"></i> Comparatif Open Source vs Propriétaire</h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Critère</th>
+                                        <th class="text-success">Open Source</th>
+                                        <th class="text-danger">Propriétaire</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Budget initial</td>
+                                        <td><span class="badge bg-success">Faible</span></td>
+                                        <td><span class="badge bg-danger">Élevé</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Flexibilité</td>
+                                        <td><span class="badge bg-success">Très élevée</span></td>
+                                        <td><span class="badge bg-warning text-dark">Limitée</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Support</td>
+                                        <td><span class="badge bg-warning text-dark">Communauté / Prestataire</span></td>
+                                        <td><span class="badge bg-success">SLA officiel</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sécurité</td>
+                                        <td><span class="badge bg-warning text-dark">Dépend de l'équipe</span></td>
+                                        <td><span class="badge bg-success">Contrôlée par l'éditeur</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Innovation</td>
+                                        <td><span class="badge bg-success">Totale</span></td>
+                                        <td><span class="badge bg-warning text-dark">Limitée</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Vendor Lock-in</td>
+                                        <td><span class="badge bg-success">Faible</span></td>
+                                        <td><span class="badge bg-danger">Élevé</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Interopérabilité</td>
+                                        <td><span class="badge bg-success">Standards ouverts</span></td>
+                                        <td><span class="badge bg-warning text-dark">Souvent fermé</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="score-section">
+                    <h3><i class="fas fa-chart-bar"></i> Résultat de l'évaluation</h3>
+                    <div class="score-display">
+                        <span class="open-source-score" id="finalOpenSourceScore">0</span> - 
+                        <span class="proprietary-score" id="finalProprietaryScore">0</span>
+                    </div>
+                    <div class="recommendation" id="recommendationText">
+                        Ajustez les critères et calculez pour voir la recommandation
+                    </div>
+                    <div id="recommendationDetails">
+                        <p id="recommendationExplanation" class="text-center">Les scores sont calculés en fonction de l'importance que vous accordez à chaque critère.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header bg-warning text-dark">
+                        <h3 class="card-title mb-0"><i class="fas fa-tools"></i> Outils Open Source stratégiques</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="tool-item">
+                            <strong>OS / Infra</strong>: Linux, Kubernetes, OpenStack
+                        </div>
+                        <div class="tool-item">
+                            <strong>Bases de données</strong>: PostgreSQL, MySQL
+                        </div>
+                        <div class="tool-item">
+                            <strong>CI/CD</strong>: Jenkins, GitLab CI
+                        </div>
+                        <div class="tool-item">
+                            <strong>ERP / Collaboration</strong>: Odoo, Nextcloud
+                        </div>
+                        <div class="tool-item">
+                            <strong>Monitoring</strong>: Prometheus, Grafana, ELK
+                        </div>
+                        <div class="tool-item">
+                            <strong>Sécurité</strong>: Suricata, Wazuh, Kali Linux
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h3 class="card-title mb-0"><i class="fas fa-chart-line"></i> Niveaux de maturité Open Source</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="maturity-level level-1">
+                            <i class="fas fa-search"></i> Niveau 1: Découverte
+                        </div>
+                        <div class="maturity-level level-2">
+                            <i class="fas fa-play-circle"></i> Niveau 2: Adoption initiale
+                        </div>
+                        <div class="maturity-level level-3">
+                            <i class="fas fa-chart-bar"></i> Niveau 3: Adoption avancée
+                        </div>
+                        <div class="maturity-level level-4">
+                            <i class="fas fa-cogs"></i> Niveau 4: Intégration stratégique
+                        </div>
+                        <div class="maturity-level level-5">
+                            <i class="fas fa-trophy"></i> Niveau 5: Gouvernance & excellence
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h3 class="card-title mb-0"><i class="fas fa-check-circle"></i> Top 5 bonnes pratiques Open Source</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="best-practice-item">
+                            <strong>1. Cartographier les logiciels existants</strong> - Identifier les solutions déjà en place
+                        </div>
+                        <div class="best-practice-item">
+                            <strong>2. Vérifier maturité et roadmap</strong> - S'assurer de la viabilité du projet
+                        </div>
+                        <div class="best-practice-item">
+                            <strong>3. Définir politique de contribution</strong> - Établir une gouvernance claire
+                        </div>
+                        <div class="best-practice-item">
+                            <strong>4. Automatiser mises à jour</strong> - Maintenir la sécurité et les fonctionnalités
+                        </div>
+                        <div class="best-practice-item">
+                            <strong>5. Audits réguliers sécurité</strong> - Prévenir les vulnérabilités
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Évaluateur Open Source vs Propriétaire - Outil d'aide à la décision stratégique</p>
+            <p class="small">Les recommandations sont basées sur une analyse multicritère et doivent être adaptées à votre contexte spécifique.</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Mise à jour des valeurs des sliders
+        document.querySelectorAll('.form-range').forEach(slider => {
+            const valueDisplay = document.getElementById(slider.id.replace('Slider', 'Value'));
+            
+            slider.addEventListener('input', function() {
+                valueDisplay.textContent = this.value;
+                updateScores();
+            });
+        });
+        
+        // Fonction pour mettre à jour les scores en temps réel
+        function updateScores() {
+            // Coefficients pour chaque critère (poids Open Source vs Propriétaire)
+            const coefficients = {
+                budget: { openSource: 5, proprietary: 2 },
+                flexibility: { openSource: 5, proprietary: 3 },
+                support: { openSource: 3, proprietary: 5 },
+                security: { openSource: 3, proprietary: 5 },
+                innovation: { openSource: 5, proprietary: 3 },
+                lockin: { openSource: 5, proprietary: 2 },
+                interoperability: { openSource: 5, proprietary: 3 },
+                skills: { openSource: 4, proprietary: 3 }
+            };
+            
+            let openSourceScore = 0;
+            let proprietaryScore = 0;
+            
+            // Calcul des scores pour chaque critère
+            for (const [criterion, coeff] of Object.entries(coefficients)) {
+                const sliderValue = parseInt(document.getElementById(criterion + 'Slider').value);
+                openSourceScore += coeff.openSource * sliderValue;
+                proprietaryScore += coeff.proprietary * sliderValue;
+            }
+            
+            // Affichage des scores
+            document.getElementById('openSourceScore').textContent = openSourceScore;
+            document.getElementById('proprietaryScore').textContent = proprietaryScore;
+        }
+        
+        // Calcul de la recommandation finale
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            updateScores();
+            
+            const openSourceScore = parseInt(document.getElementById('openSourceScore').textContent);
+            const proprietaryScore = parseInt(document.getElementById('proprietaryScore').textContent);
+            
+            document.getElementById('finalOpenSourceScore').textContent = openSourceScore;
+            document.getElementById('finalProprietaryScore').textContent = proprietaryScore;
+            
+            let recommendation = '';
+            let explanation = '';
+            let recommendationClass = '';
+            
+            if (openSourceScore > proprietaryScore + 20) {
+                recommendation = 'Open Source recommandé';
+                explanation = 'Vos besoins favorisent les solutions Open Source. Assurez-vous d\'avoir une équipe formée et prévoyez un support externe si nécessaire.';
+                recommendationClass = 'open-source-recommendation';
+            } else if (proprietaryScore > openSourceScore + 20) {
+                recommendation = 'Solution propriétaire recommandée';
+                explanation = 'Vos critères prioritaires (SLA, sécurité) favorisent les solutions propriétaires. Vérifiez les possibilités d\'intégration et les coûts à long terme.';
+                recommendationClass = 'proprietary-recommendation';
+            } else {
+                recommendation = 'Approche hybride recommandée';
+                explanation = 'Vos besoins sont équilibrés. Une approche hybride (Open Source pour la flexibilité, propriétaire pour les composants critiques) est probablement optimale.';
+                recommendationClass = 'hybrid-recommendation';
+            }
+            
+            document.getElementById('recommendationText').textContent = recommendation;
+            document.getElementById('recommendationText').className = 'recommendation ' + recommendationClass;
+            document.getElementById('recommendationExplanation').textContent = explanation;
+        });
+        
+        // Initialisation
+        updateScores();
+    </script>
+</body>
+</html>

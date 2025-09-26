@@ -160,6 +160,13 @@
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="makeorbuy-tab" data-bs-toggle="tab" data-bs-target="#makeorbuy" type="button" role="tab" aria-controls="makeorbuy" aria-selected="false"><i class="fas fa-handshake"></i> Make Or Buy (OS)</button>
             </li>
+			
+			  <li class="nav-item" role="presentation">
+                <button class="nav-link" id="bonnespratiques-tab" data-bs-toggle="tab" data-bs-target="#bonnespratiques" type="button" role="tab" aria-controls="bonnespratiques" aria-selected="false">
+                    <i class="fas fa-lightbulb"></i> Bonnes pratiques
+                </button>
+            </li>
+			
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="risk-tab" data-bs-toggle="tab" data-bs-target="#risk" type="button" role="tab" aria-controls="risk" aria-selected="false"><i class="fas fa-shield-alt"></i> Risques & Clés</button>
             </li>
@@ -434,6 +441,75 @@
                 </div>
             </div>
 
+
+
+			   <!-- Onglet Bonnes pratiques -->
+            <div class="tab-pane fade" id="bonnespratiques" role="tabpanel" aria-labelledby="bonnespratiques-tab">
+                <h2 class="mb-4"><i class="fas fa-lightbulb"></i> Bonnes pratiques Open Source</h2>
+                
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h3 class="card-title mb-0"><i class="fas fa-check-circle"></i> Top 10 bonnes pratiques Open Source</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="best-practice-item">
+                            <strong>1. Cartographier les logiciels existants</strong> - Identifier les solutions déjà en place et leurs licences
+                        </div>
+                        <div class="best-practice-item">
+                            <strong>2. Définir des besoins métiers précis</strong> - Éviter les solutions surdimensionnées ou inadéquates
+                        </div>
+                        <div class="best-practice-item">
+                            <strong>3. Vérifier la maturité et la roadmap</strong> - S'assurer de la viabilité à long terme du projet
+                        </div>
+                        <div class="best-practice-item">
+                            <strong>4. Évaluer la communauté</strong> - Une communauté active est gage de pérennité
+                        </div>
+                        <div class="best-practice-item">
+                            <strong>5. Définir une politique de contribution</strong> - Clarifier les règles de participation aux projets
+                        </div>
+                        <div class="best-practice-item">
+                            <strong>6. Former les équipes</strong> - Investir dans la montée en compétences des collaborateurs
+                        </div>
+                        <div class="best-practice-item">
+                            <strong>7. Documenter les personnalisations</strong> - Faciliter la maintenance et les évolutions
+                        </div>
+                        <div class="best-practice-item">
+                            <strong>8. Automatiser les mises à jour de sécurité</strong> - Maintenir le système protégé des vulnérabilités
+                        </div>
+                        <div class="best-practice-item">
+                            <strong>9. Assurer la conformité des licences</strong> - Respecter les obligations légales de chaque licence
+                        </div>
+                        <div class="best-practice-item">
+                            <strong>10. Évaluer régulièrement le ROI</strong> - Mesurer l'impact et l'efficacité des solutions déployées
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mt-4">
+                    <div class="card-header bg-warning text-dark">
+                        <h3 class="card-title mb-0"><i class="fas fa-chart-line"></i> Niveaux de maturité Open Source</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="maturity-level level-1">
+                            <i class="fas fa-search"></i> <strong>Niveau 1: Découverte</strong> - Tests ponctuels, vigilance sécurité/licences (ex. VLC, GIMP)
+                        </div>
+                        <div class="maturity-level level-2">
+                            <i class="fas fa-play-circle"></i> <strong>Niveau 2: Adoption initiale</strong> - Fonctions support, formation à renforcer (ex. PostgreSQL, WordPress)
+                        </div>
+                        <div class="maturity-level level-3">
+                            <i class="fas fa-chart-bar"></i> <strong>Niveau 3: Adoption avancée</strong> - Projets critiques, gouvernance établie (ex. Odoo avancé, Grafana)
+                        </div>
+                        <div class="maturity-level level-4">
+                            <i class="fas fa-cogs"></i> <strong>Niveau 4: Intégration stratégique</strong> - Levier pour architecture et innovation (ex. Kubernetes, OpenStack)
+                        </div>
+                        <div class="maturity-level level-5">
+                            <i class="fas fa-trophy"></i> <strong>Niveau 5: Gouvernance & excellence</strong> - Pilier central, contribution active (ex. Kubernetes multi-cluster)
+                        </div>
+                    </div>
+                </div>
+            </div>
+			
+			
 			<div class="tab-pane fade" id="glossary" role="tabpanel" aria-labelledby="glossary-tab">
                 <h2><i class="fas fa-book-open"></i> Glossaire - Les 21 Mots-Clés</h2>
                 <p class="lead">Maîtriser ces termes est essentiel pour prendre une décision éclairée entre Open Source et Propriétaire.</p>

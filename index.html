@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Évaluateur Open Source vs Propriétaire - V4.0</title>
+    <title>Évaluateur Open Source vs Propriétaire - V4.0 - Customisé</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -207,6 +207,20 @@
                             <div class="card-body">
                                 <p class="text-muted">Évaluez l'importance de chaque critère (1 = faible, 5 = très important) pour votre projet.</p>
 
+                                <div class="mb-4">
+                                    <h5 class="mb-3"><i class="fas fa-magic"></i> Pré-sélections rapides :</h5>
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                                        <button class="btn btn-outline-success me-md-2" type="button" onclick="loadPresetWeights('os')">
+                                            <i class="fas fa-code-branch"></i> Favorable Open Source
+                                        </button>
+                                        <button class="btn btn-outline-danger me-md-2" type="button" onclick="loadPresetWeights('prop')">
+                                            <i class="fas fa-copyright"></i> Favorable Propriétaire
+                                        </button>
+                                        <button class="btn btn-outline-warning text-dark" type="button" onclick="loadPresetWeights('hybrid')">
+                                            <i class="fas fa-balance-scale-left"></i> Équilibré (Hybride)
+                                        </button>
+                                    </div>
+                                </div>
                                 <div class="slider-container">
                                     <div class="slider-label">Budget / TCO (Coût Total de Possession)</div>
                                     <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="budgetSlider"></div>
@@ -464,8 +478,7 @@
 
 
 
-			   <!-- Onglet Bonnes pratiques -->
-            <div class="tab-pane fade" id="bonnespratiques" role="tabpanel" aria-labelledby="bonnespratiques-tab">
+			   <div class="tab-pane fade" id="bonnespratiques" role="tabpanel" aria-labelledby="bonnespratiques-tab">
                 <h2 class="mb-4"><i class="fas fa-lightbulb"></i> Bonnes pratiques Open Source</h2>
                 
                 <div class="card">
@@ -579,7 +592,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // Mise à jour des valeurs des sliders en temps réel
     document.querySelectorAll('.form-range').forEach(slider => {
@@ -591,8 +603,44 @@
         });
     });
 
+    // Fonction AJOUTÉE pour charger les pondérations prédéfinies
+    function loadPresetWeights(scenario) {
+        const presets = {
+            // Favorise le TCO, Flexibilité, Communauté, Réversibilité, Lock-in
+            os: {
+                budget: 5, timetomarket: 4, flexibility: 5, support: 2, community: 5, 
+                security: 4, lockin: 5, sovereignty: 4, reversibility: 5
+            },
+            // Favorise le Support (SLA), Sécurité (Garantie), et minimise le Vendor Lock-in
+            prop: {
+                budget: 2, timetomarket: 3, flexibility: 1, support: 5, community: 1, 
+                security: 5, lockin: 1, sovereignty: 3, reversibility: 1
+            },
+            // Pondérations neutres ou légèrement élevées pour les critères modérés
+            hybrid: {
+                budget: 4, timetomarket: 3, flexibility: 3, support: 4, community: 3, 
+                security: 4, lockin: 3, sovereignty: 3, reversibility: 3
+            }
+        };
+
+        const weights = presets[scenario];
+        if (weights) {
+            for (const [criterion, value] of Object.entries(weights)) {
+                const sliderElement = document.getElementById(criterion + 'Slider');
+                const valueDisplay = document.getElementById(criterion + 'Value');
+                if (sliderElement) {
+                    sliderElement.value = value;
+                    valueDisplay.textContent = value;
+                }
+            }
+            // Calculer immédiatement après avoir défini les valeurs
+            updateScores(true); 
+        }
+    }
+
+
     // Fonction pour mettre à jour les scores en temps réel
-    function updateScores() {
+    function updateScores(forceRecalculate = false) {
         // COEFFICIENTS RÉVISÉS (V5.1) : Plus d'avantages au Propriétaire pour les critères critiques
         const coefficients = {
             budget: { openSource: 3, proprietary: 2 },         
@@ -623,9 +671,11 @@
         document.getElementById('openSourceScore').textContent = openSourceScore;
         document.getElementById('proprietaryScore').textContent = proprietaryScore;
         
-        // Si le bouton de calcul a déjà été cliqué, mettre à jour le résultat final immédiatement
-        if(document.getElementById('calculateBtn').classList.contains('calculated')) {
+        // Si le bouton de calcul a déjà été cliqué OU si on force le recalcul (via preset), mettre à jour le résultat final
+        if(document.getElementById('calculateBtn').classList.contains('calculated') || forceRecalculate) {
             calculateRecommendation(openSourceScore, proprietaryScore);
+            // Marquer comme calculé si on force, pour maintenir la mise à jour en temps réel ensuite
+            document.getElementById('calculateBtn').classList.add('calculated');
         }
     }
 
@@ -662,11 +712,7 @@
 
     // Gestion du clic sur le bouton de calcul final
     document.getElementById('calculateBtn').addEventListener('click', function() {
-        updateScores(); 
-        const openSourceScore = parseInt(document.getElementById('openSourceScore').textContent);
-        const proprietaryScore = parseInt(document.getElementById('proprietaryScore').textContent);
-        calculateRecommendation(openSourceScore, proprietaryScore);
-        this.classList.add('calculated'); 
+        updateScores(true); // Force le recalcul de la recommandation
     });
 
     // Initialisation

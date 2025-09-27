@@ -7,10 +7,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Définition des couleurs pour la thématique Make or Buy */
         :root {
             --make-color: #0d6efd;      /* Bleu pour Make (Développer) */
             --buy-color: #20c997;       /* Vert pour Buy (Acquérir) */
-            --undecided-color: #6c757d; /* Gris pour Indécis */
+            --undecided-color: #ffc107; /* Jaune pour Indécis/Hybride */
         }
         
         body {
@@ -35,13 +36,16 @@
             border: none;
             margin-bottom: 20px;
         }
-
+        /* Style pour la colonne des résultats */
         .score-section {
-            background: linear-gradient(45deg, #4c2975, #6a1b9a, #ab47bc);
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
             border-radius: 15px;
             padding: 25px;
             margin-top: 30px;
+            position: sticky; 
+            top: 20px;
+            max-height: 95vh;
         }
         
         .score-display {
@@ -49,14 +53,26 @@
             font-weight: bold;
             text-align: center;
             margin: 20px 0;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .make-score, .buy-score {
+            display: block;
+            min-width: 100px;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
         }
 
         .make-score {
             color: var(--make-color);
+            border: 2px solid var(--make-color);
         }
 
         .buy-score {
             color: var(--buy-color);
+            border: 2px solid var(--buy-color);
         }
 
         .recommendation {
@@ -66,23 +82,19 @@
             font-weight: bold;
         }
 
-        .make-recommendation {
-            color: var(--make-color);
-        }
-
-        .buy-recommendation {
-            color: var(--buy-color);
-        }
-
-        .undecided-recommendation {
-            color: var(--undecided-color);
-        }
+        .make-recommendation { color: var(--make-color); }
+        .buy-recommendation { color: var(--buy-color); }
+        .undecided-recommendation { color: var(--undecided-color); }
 
         .slider-container {
-            padding: 15px 0;
+            padding: 10px 0;
             display: flex;
             align-items: center;
             gap: 15px;
+            border-bottom: 1px dashed #e9ecef;
+        }
+        .slider-container:last-child {
+            border-bottom: none;
         }
 
         .slider-wrapper {
@@ -91,7 +103,10 @@
 
         .slider-label {
             font-weight: 600;
-            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 30%;
         }
 
         .slider-value {
@@ -100,15 +115,32 @@
             min-width: 30px;
             text-align: center;
         }
-        
-        .example-card .card-body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+
+        .help-icon {
+            color: #42a5f5;
+            cursor: pointer;
+            transition: color 0.2s;
         }
 
+        .help-icon:hover {
+            color: #1976d2;
+        }
+        
         .example-card h5 {
             font-weight: bold;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
     </style>
 </head>
@@ -117,7 +149,7 @@
     <div class="header-section">
         <div class="container">
             <h1 class="display-4 fw-bold text-center"><i class="fas fa-hand-holding-box"></i> Matrice Make Or Buy</h1>
-            <p class="lead text-center">Évaluation initiale du modèle de développement : Interne ou Existant ?</p>
+            <p class="lead text-center">Évaluation basée sur 15 critères pour le modèle de développement (Interne vs Existant).</p>
         </div>
     </div>
 
@@ -127,13 +159,10 @@
                 <!-- Onglets de navigation -->
                 <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="evaluation-tab" data-bs-toggle="tab" data-bs-target="#evaluation" type="button" role="tab" aria-controls="evaluation" aria-selected="true"><i class="fas fa-sliders-h"></i> Évaluation</button>
+                        <button class="nav-link active" id="evaluation-tab" data-bs-toggle="tab" data-bs-target="#evaluation" type="button" role="tab" aria-controls="evaluation" aria-selected="true"><i class="fas fa-sliders-h"></i> Pondération des 15 Critères</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="characteristics-tab" data-bs-toggle="tab" data-bs-target="#characteristics" type="button" role="tab" aria-controls="characteristics" aria-selected="false"><i class="fas fa-chart-line"></i> Caractéristiques</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="annex-tab" data-bs-toggle="tab" data-bs-target="#annex" type="button" role="tab" aria-controls="annex" aria-selected="false"><i class="fas fa-magic"></i> Annexe</button>
+                        <button class="nav-link" id="characteristics-tab" data-bs-toggle="tab" data-bs-target="#characteristics" type="button" role="tab" aria-controls="characteristics" aria-selected="false"><i class="fas fa-chart-line"></i> Avantages/Inconvénients</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="glossary-tab" data-bs-toggle="tab" data-bs-target="#glossary" type="button" role="tab" aria-controls="glossary" aria-selected="false"><i class="fas fa-book-open"></i> Glossaire</button>
@@ -142,60 +171,130 @@
 
                 <!-- Contenu des onglets -->
                 <div class="tab-content" id="myTabContent">
-                    <!-- Onglet 1: Évaluation -->
+                    <!-- Onglet 1: Évaluation (actif) -->
                     <div class="tab-pane fade show active" id="evaluation" role="tabpanel" aria-labelledby="evaluation-tab">
                         <div class="card criteria-card mt-4">
                             <div class="card-header bg-primary text-white">
-                                <h3 class="card-title mb-0"><i class="fas fa-sliders-h"></i> Pondération des Critères de Décision</h3>
+                                <h3 class="card-title mb-0"><i class="fas fa-sliders-h"></i> Évaluation de 1 à 5 (1 = faible importance, 5 = très forte importance)</h3>
                             </div>
                             <div class="card-body">
-                                <p class="text-muted">Évaluez l'importance de chaque critère pour votre projet (1 = faible, 5 = très important).</p>
+                                <p class="text-muted">Déplacez le curseur pour indiquer l'importance de chaque critère pour la réussite de votre projet. <i class="fas fa-info-circle text-info"></i> Cliquez sur l'icône d'aide à côté du libellé.</p>
 
+                                <!-- Bloc 1: Critères Fonctionnels & Projet -->
+                                <h5 class="mt-3 mb-2 text-primary"><i class="fas fa-project-diagram"></i> Critères Fonctionnels & Délai</h5>
                                 <div class="slider-container">
-                                    <div class="slider-label">Spécificité du Besoin (Unique vs Standard)</div>
+                                    <div class="slider-label">Spécificité du Besoin (Unique vs Standard)
+                                        <i class="fas fa-question-circle help-icon" data-bs-toggle="modal" data-bs-target="#helpModal" data-criterion="specificity"></i>
+                                    </div>
                                     <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="specificitySlider"></div>
                                     <div class="slider-value" id="specificityValue">3</div>
                                 </div>
-
                                 <div class="slider-container">
-                                    <div class="slider-label">Délai de Mise en Œuvre (Time-to-Market)</div>
+                                    <div class="slider-label">Délai de Mise en Œuvre (Time-to-Market)
+                                        <i class="fas fa-question-circle help-icon" data-bs-toggle="modal" data-bs-target="#helpModal" data-criterion="timetomarket"></i>
+                                    </div>
                                     <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="timetomarketSlider"></div>
                                     <div class="slider-value" id="timetomarketValue">3</div>
                                 </div>
-
                                 <div class="slider-container">
-                                    <div class="slider-label">Contrôle Total (IP, Évolution)</div>
+                                    <div class="slider-label">Contrôle Total (Propriété Intellectuelle, Évolution)
+                                        <i class="fas fa-question-circle help-icon" data-bs-toggle="modal" data-bs-target="#helpModal" data-criterion="control"></i>
+                                    </div>
                                     <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="controlSlider"></div>
                                     <div class="slider-value" id="controlValue">3</div>
                                 </div>
-
+                                
+                                <!-- Bloc 2: Critères SI & Urbanisation (Héritage) -->
+                                <h5 class="mt-4 mb-2 text-primary"><i class="fas fa-sitemap"></i> Critères SI & Urbanisation</h5>
                                 <div class="slider-container">
-                                    <div class="slider-label">Coût Total de Possession (TCO)</div>
-                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="tcoSlider"></div>
-                                    <div class="slider-value" id="tcoValue">3</div>
+                                    <div class="slider-label">Conformité Urbanisation (Alignement Schéma Directeur)
+                                        <i class="fas fa-question-circle help-icon" data-bs-toggle="modal" data-bs-target="#helpModal" data-criterion="urbanism"></i>
+                                    </div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="urbanismSlider"></div>
+                                    <div class="slider-value" id="urbanismValue">3</div>
+                                </div>
+                                <div class="slider-container">
+                                    <div class="slider-label">Risque de Doublon Fonctionnel (Existants)
+                                        <i class="fas fa-question-circle help-icon" data-bs-toggle="modal" data-bs-target="#helpModal" data-criterion="duplication"></i>
+                                    </div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="duplicationSlider"></div>
+                                    <div class="slider-value" id="duplicationValue">3</div>
+                                </div>
+                                <div class="slider-container">
+                                    <div class="slider-label">Réutilisation du Legacy (Modules/APIs existants)
+                                        <i class="fas fa-question-circle help-icon" data-bs-toggle="modal" data-bs-target="#helpModal" data-criterion="legacy"></i>
+                                    </div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="legacySlider"></div>
+                                    <div class="slider-value" id="legacyValue">3</div>
+                                </div>
+                                <div class="slider-container">
+                                    <div class="slider-label">Interopérabilité & APIs (Facilité d'échange)
+                                        <i class="fas fa-question-circle help-icon" data-bs-toggle="modal" data-bs-target="#helpModal" data-criterion="interop"></i>
+                                    </div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="interopSlider"></div>
+                                    <div class="slider-value" id="interopValue">3</div>
                                 </div>
 
+                                <!-- Bloc 3: Critères Ressources & Technique -->
+                                <h5 class="mt-4 mb-2 text-primary"><i class="fas fa-code"></i> Critères Ressources & Technique</h5>
                                 <div class="slider-container">
-                                    <div class="slider-label">Compétences Internes Disponibles</div>
+                                    <div class="slider-label">Compétences Internes Disponibles
+                                        <i class="fas fa-question-circle help-icon" data-bs-toggle="modal" data-bs-target="#helpModal" data-criterion="skills"></i>
+                                    </div>
                                     <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="skillsSlider"></div>
                                     <div class="slider-value" id="skillsValue">3</div>
                                 </div>
                                 <div class="slider-container">
-                                    <div class="slider-label">Gestion des Risques</div>
-                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="riskSlider"></div>
-                                    <div class="slider-value" id="riskValue">3</div>
+                                    <div class="slider-label">Maintenabilité (Facilité d'évolution à long terme)
+                                        <i class="fas fa-question-circle help-icon" data-bs-toggle="modal" data-bs-target="#helpModal" data-criterion="maintainability"></i>
+                                    </div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="maintainabilitySlider"></div>
+                                    <div class="slider-value" id="maintainabilityValue">3</div>
                                 </div>
 
+                                <!-- Bloc 4: Critères Gouvernance, Coût & Risque -->
+                                <h5 class="mt-4 mb-2 text-primary"><i class="fas fa-balance-scale"></i> Critères Gouvernance, Coût & Risque</h5>
                                 <div class="slider-container">
-                                    <div class="slider-label">Alignement Stratégique</div>
+                                    <div class="slider-label">Coût Total de Possession (TCO)
+                                        <i class="fas fa-question-circle help-icon" data-bs-toggle="modal" data-bs-target="#helpModal" data-criterion="tco"></i>
+                                    </div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="tcoSlider"></div>
+                                    <div class="slider-value" id="tcoValue">3</div>
+                                </div>
+                                <div class="slider-container">
+                                    <div class="slider-label">Alignement Stratégique (Cœur de métier / Mission)
+                                        <i class="fas fa-question-circle help-icon" data-bs-toggle="modal" data-bs-target="#helpModal" data-criterion="strategic"></i>
+                                    </div>
                                     <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="strategicSlider"></div>
                                     <div class="slider-value" id="strategicValue">3</div>
                                 </div>
-
                                 <div class="slider-container">
-                                    <div class="slider-label">Maintenabilité</div>
-                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="maintainabilitySlider"></div>
-                                    <div class="slider-value" id="maintainabilityValue">3</div>
+                                    <div class="slider-label">Gouvernance (Contrôle Propriétaire vs Communauté)
+                                        <i class="fas fa-question-circle help-icon" data-bs-toggle="modal" data-bs-target="#helpModal" data-criterion="governance"></i>
+                                    </div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="governanceSlider"></div>
+                                    <div class="slider-value" id="governanceValue">3</div>
+                                </div>
+                                <div class="slider-container">
+                                    <div class="slider-label">Sécurité et Conformité (Réglementaire)
+                                        <i class="fas fa-question-circle help-icon" data-bs-toggle="modal" data-bs-target="#helpModal" data-criterion="security"></i>
+                                    </div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="securitySlider"></div>
+                                    <div class="slider-value" id="securityValue">3</div>
+                                </div>
+                                <div class="slider-container">
+                                    <div class="slider-label">Valorisation des Données (Propriété et Exploitation)
+                                        <i class="fas fa-question-circle help-icon" data-bs-toggle="modal" data-bs-target="#helpModal" data-criterion="dataValue"></i>
+                                    </div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="dataValueSlider"></div>
+                                    <div class="slider-value" id="dataValueValue">3</div>
+                                </div>
+                                <div class="slider-container">
+                                    <div class="slider-label">Gestion des Risques (Simplicité d'intégration et Vendor Lock-in)
+                                        <i class="fas fa-question-circle help-icon" data-bs-toggle="modal" data-bs-target="#helpModal" data-criterion="risk"></i>
+                                    </div>
+                                    <div class="slider-wrapper"><input type="range" class="form-range" min="1" max="5" value="3" id="riskSlider"></div>
+                                    <div class="slider-value" id="riskValue">3</div>
                                 </div>
 
                                 <div class="mt-4">
@@ -205,28 +304,50 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Annexe : Exemples de Pondération -->
+                        <div class="card my-4 example-card">
+                            <div class="card-header bg-secondary text-white">
+                                <h3 class="card-title mb-0"><i class="fas fa-magic"></i> Exemples de Pondération Rapide</h3>
+                            </div>
+                            <div class="card-body">
+                                <p class="text-muted small">Cliquez pour appliquer un scénario type de pondération et voir l'impact immédiat sur le résultat.</p>
+                                <div class="row">
+                                    <div class="col-md-6 mb-2">
+                                        <h5 class="make-recommendation">Ex. Priorité au DÉVELOPPEMENT (Make)</h5>
+                                        <p class="small text-muted">Besoins uniques, cœur de métier, contrôle, Legacy/Données critiques.</p>
+                                        <button class="btn btn-outline-primary btn-sm w-100" onclick="applyExample('make')"><i class="fas fa-arrow-alt-circle-right"></i> Appliquer</button>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <h5 class="buy-recommendation">Ex. Priorité à l'ACQUISITION (Buy)</h5>
+                                        <p class="small text-muted">Rapidité, TCO maîtrisé, besoin standard, Sécurité/Conformité éditeur.</p>
+                                        <button class="btn btn-outline-success btn-sm w-100" onclick="applyExample('buy')"><i class="fas fa-arrow-alt-circle-right"></i> Appliquer</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Onglet 2: Caractéristiques -->
                     <div class="tab-pane fade" id="characteristics" role="tabpanel" aria-labelledby="characteristics-tab">
                         <div class="card my-4">
                             <div class="card-header bg-info text-white">
-                                <h3 class="card-title mb-0"><i class="fas fa-chart-line"></i> Caractéristiques de chaque modèle</h3>
+                                <h3 class="card-title mb-0"><i class="fas fa-chart-line"></i> Avantages et Inconvénients Clés</h3>
                             </div>
                             <div class="card-body">
                                 <div class="row text-center">
                                     <div class="col-md-6 mb-3">
                                         <h4 class="make-recommendation">Make (Développer)</h4>
                                         <ul class="list-group list-group-flush text-start">
-                                            <li class="list-group-item"><strong>Avantages :</strong> Contrôle total, alignement parfait avec le métier, propriété intellectuelle.</li>
-                                            <li class="list-group-item"><strong>Inconvénients :</strong> Coût et délai élevés, forte dépendance interne.</li>
+                                            <li class="list-group-item"><strong><i class="fas fa-check text-success"></i> Avantages :</strong> Alignement 100% métier, Propriété des données et de l'IP, Intégration Legacy parfaite, Gouvernance interne.</li>
+                                            <li class="list-group-item"><strong><i class="fas fa-times text-danger"></i> Inconvénients :</strong> Coût/Délai élevés, Responsabilité totale de la Sécurité, Charge de la Maintenabilité.</li>
                                         </ul>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <h4 class="buy-recommendation">Buy / Leverage (Acquérir)</h4>
                                         <ul class="list-group list-group-flush text-start">
-                                            <li class="list-group-item"><strong>Avantages :</strong> Rapide à déployer, support et documentation existants, TCO connu.</li>
-                                            <li class="list-group-item"><strong>Inconvénients :</strong> Moins de flexibilité, dépendance à un tiers, risque de Vendor Lock-in.</li>
+                                            <li class="list-group-item"><strong><i class="fas fa-check text-success"></i> Avantages :</strong> TCO connu, Mise en œuvre rapide, Sécurité gérée par l'éditeur, Réduit le risque de doublon.</li>
+                                            <li class="list-group-item"><strong><i class="fas fa-times text-danger"></i> Inconvénients :</strong> Dépendance à un tiers (Lock-in), Moins de flexibilité, Difficulté d'accès/exploitation des données, Coût des APIs.</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -234,30 +355,7 @@
                         </div>
                     </div>
 
-                    <!-- Onglet 3: Annexe -->
-                    <div class="tab-pane fade" id="annex" role="tabpanel" aria-labelledby="annex-tab">
-                        <div class="card my-4 example-card">
-                            <div class="card-header bg-secondary text-white">
-                                <h3 class="card-title mb-0"><i class="fas fa-magic"></i> Annexe : Exemples de Pondération</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <h5 class="make-recommendation">Exemple 1 : Priorité au DÉVELOPPEMENT (Make)</h5>
-                                        <p class="small text-muted">Pour un projet stratégique, très spécifique et sur le long terme.</p>
-                                        <button class="btn btn-outline-primary btn-sm w-100" onclick="applyExample('make')"><i class="fas fa-arrow-alt-circle-right"></i> Appliquer cet exemple</button>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <h5 class="buy-recommendation">Exemple 2 : Priorité à l'ACQUISITION (Buy)</h5>
-                                        <p class="small text-muted">Pour un besoin standard nécessitant rapidité et coûts maîtrisés.</p>
-                                        <button class="btn btn-outline-success btn-sm w-100" onclick="applyExample('buy')"><i class="fas fa-arrow-alt-circle-right"></i> Appliquer cet exemple</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Onglet 4: Glossaire -->
+                    <!-- Onglet 3: Glossaire -->
                     <div class="tab-pane fade" id="glossary" role="tabpanel" aria-labelledby="glossary-tab">
                         <div class="card my-4">
                             <div class="card-header bg-dark text-white">
@@ -265,12 +363,13 @@
                             </div>
                             <div class="card-body">
                                 <ul class="list-group list-group-flush">
-                                    <li class="list-group-item"><strong>Make :</strong> Stratégie de développement interne d'une solution logicielle, sur mesure.</li>
-                                    <li class="list-group-item"><strong>Buy :</strong> Stratégie d'acquisition d'une solution logicielle existante sur le marché.</li>
-                                    <li class="list-group-item"><strong>Leverage :</strong> Utilisation et adaptation d'une solution existante (souvent Open Source) comme base.</li>
-                                    <li class="list-group-item"><strong>TCO (Total Cost of Ownership) :</strong> Coût total de possession, incluant l'acquisition, la maintenance, le support, etc.</li>
-                                    <li class="list-group-item"><strong>Time-to-Market :</strong> Délai nécessaire pour mettre une solution fonctionnelle sur le marché ou à disposition des utilisateurs.</li>
-                                    <li class="list-group-item"><strong>Vendor Lock-in :</strong> Dépendance à un fournisseur, rendant la migration vers une autre solution coûteuse.</li>
+                                    <li class="list-group-item"><strong>Make :</strong> Stratégie de développement interne (sur mesure).</li>
+                                    <li class="list-group-item"><strong>Buy / Leverage :</strong> Stratégie d'acquisition ou d'utilisation d'une solution existante.</li>
+                                    <li class="list-group-item"><strong>Urbanisation SI :</strong> Alignement du projet avec l'architecture cible et le schéma directeur du Système d'Information.</li>
+                                    <li class="list-group-item"><strong>Legacy :</strong> Systèmes, applications ou données héritées dont la réutilisation est nécessaire.</li>
+                                    <li class="list-group-item"><strong>TCO (Total Cost of Ownership) :</strong> Coût total de possession (acquisition, maintenance, support, infrastructure, licences).</li>
+                                    <li class="list-group-item"><strong>Vendor Lock-in :</strong> Difficulté de changer de fournisseur (éditeurs de solutions) une fois que la solution est adoptée.</li>
+                                    <li class="list-group-item"><strong>Interopérabilité :</strong> Capacité du système à communiquer et échanger des données avec d'autres systèmes.</li>
                                 </ul>
                             </div>
                         </div>
@@ -278,19 +377,76 @@
                 </div>
             </div>
 
+            <!-- Colonne des résultats (latérale) -->
             <div class="col-lg-4">
                 <div class="score-section">
                     <h3><i class="fas fa-chart-bar"></i> Résultat de l'évaluation</h3>
+                    
+                    <div class="text-center mb-4">
+                        <p class="mb-1">Score Actuel (Maximum théorique : 75)</p>
+                    </div>
+
                     <div class="score-display">
-                        <span class="make-score" id="finalMakeScore">0</span> -
-                        <span class="buy-score" id="finalBuyScore">0</span>
+                        <div>
+                            <span class="make-score" id="finalMakeScore">0</span>
+                            <small class="d-block mt-1">MAKE</small>
+                        </div>
+                        <div>
+                            <span class="buy-score" id="finalBuyScore">0</span>
+                            <small class="d-block mt-1">BUY</small>
+                        </div>
                     </div>
-                    <div class="recommendation" id="recommendationText">
-                        Ajustez les critères et calculez pour voir la recommandation
+
+                    <hr class="my-4 border-light">
+                    
+                    <div id="recommendationBlock">
+                        <div class="recommendation" id="recommendationText">
+                            Ajustez les critères et calculez pour voir la recommandation
+                        </div>
+                        <div id="recommendationDetails">
+                            <p id="recommendationExplanation" class="text-center small text-white-75">Le score le plus élevé indique le modèle le plus adapté à vos priorités stratégiques.</p>
+                        </div>
                     </div>
-                    <div id="recommendationDetails">
-                        <p id="recommendationExplanation" class="text-center">Le score le plus élevé indique le modèle le plus adapté à vos priorités.</p>
+
+                    <hr class="my-4 border-light">
+
+                    <h4><i class="fas fa-lightbulb"></i> Légende & Explications</h4>
+                    <p class="small text-white-75">La matrice évalue 15 critères. Le score final est la somme des pondérations (curseur de 1 à 5) multipliée par un coefficient spécifique à chaque modèle.</p>
+                    
+                    <div class="legend-item">
+                        <span class="legend-color" style="background-color: var(--make-color);"></span>
+                        <span class="small">**Score MAKE (Bleu) :** Critères qui favorisent le **Développement Interne** (ex: Spécificité, Contrôle, Données).</span>
                     </div>
+                    <div class="legend-item">
+                        <span class="legend-color" style="background-color: var(--buy-color);"></span>
+                        <span class="small">**Score BUY (Vert) :** Critères qui favorisent l'**Acquisition/Leverage** (ex: Délai, TCO, Doublon, Conformité éditeur).</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal d'aide (Help) -->
+    <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="helpModalLabel">Aide à la notation : <span id="criterionTitle"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="criterionDescription"></p>
+                    <hr>
+                    <p class="mb-1"><strong>Comment noter (Pondération) :</strong></p>
+                    <ul class="list-unstyled small">
+                        <li><span class="badge bg-danger">1</span> : Critère de **faible importance** pour la réussite du projet.</li>
+                        <li><span class="badge bg-warning">3</span> : Critère de **moyenne importance** ou neutre.</li>
+                        <li><span class="badge bg-success">5</span> : Critère de **très forte importance** ou stratégique.</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
                 </div>
             </div>
         </div>
@@ -298,6 +454,100 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Mapping des 15 critères avec leurs coefficients d'impact (Make vs Buy)
+        const coefficients = {
+            // Bloc 1: Fonctionnels & Projet
+            specificity: { make: 5, buy: 1 },    // Spécificité haute = Make
+            timetomarket: { make: 1, buy: 5 },   // Délai court = Buy
+            control: { make: 5, buy: 1 },        // Contrôle total = Make
+            
+            // Bloc 2: SI & Urbanisation
+            urbanism: { make: 4, buy: 3 },       // Alignement parfait = Make, Intégration simple = Buy
+            duplication: { make: 2, buy: 5 },    // Éviter le doublon = Buy
+            legacy: { make: 5, buy: 1 },         // Intégration Legacy forte = Make
+            interop: { make: 4, buy: 3 },        // APIs ouvertes = Buy, APIs sur mesure = Make
+            
+            // Bloc 3: Ressources & Technique
+            skills: { make: 4, buy: 2 },         // Compétences internes = Make
+            maintainability: { make: 4, buy: 3 },// Longévité/Évolution facile = Make
+            
+            // Bloc 4: Gouvernance, Coût & Risque (Inclus les Nouveaux)
+            tco: { make: 1, buy: 5 },            // Coût connu/maîtrisé = Buy
+            strategic: { make: 5, buy: 2 },      // Cœur de métier = Make
+            governance: { make: 5, buy: 2 },     // Contrôle de la roadmap = Make
+            security: { make: 3, buy: 4 },       // Certification/Sécurité gérée par éditeur = Buy, Maîtrise totale = Make
+            dataValue: { make: 5, buy: 1 },      // Propriété des données = Make
+            risk: { make: 3, buy: 4 }            // Vendor lock-in faible = Buy
+        };
+
+        // Descriptions détaillées des critères pour le modal d'aide
+        const criterionDescriptions = {
+            specificity: { 
+                title: "Spécificité du Besoin", 
+                description: "Le besoin est-il très particulier et unique à votre organisation (score 5) ou s'agit-il d'une fonctionnalité standard déjà couverte par des solutions du marché (score 1) ? **Plus le besoin est unique, plus 'MAKE' est favorisé.**" 
+            },
+            timetomarket: { 
+                title: "Délai de Mise en Œuvre (Time-to-Market)", 
+                description: "Le projet doit-il être livré très rapidement (score 5) ou disposez-vous de beaucoup de temps pour le développement (score 1) ? **Un délai très court favorise 'BUY'.**" 
+            },
+            control: { 
+                title: "Contrôle Total (IP, Évolution)", 
+                description: "Est-il essentiel d'avoir la pleine propriété intellectuelle (PI) et le contrôle total sur la feuille de route et les évolutions futures (score 5) ? **Un contrôle total favorise 'MAKE'.**" 
+            },
+            urbanism: { 
+                title: "Conformité Urbanisation (Alignement SI)", 
+                description: "Est-il crucial que la solution s'aligne parfaitement et sans compromis avec le schéma directeur de votre Système d'Information (score 5) ? **Une conformité stricte favorise 'MAKE'.**" 
+            },
+            duplication: { 
+                title: "Risque de Doublon Fonctionnel", 
+                description: "Le projet risque-t-il de recréer une fonctionnalité ou un système déjà existant au sein de l'entreprise (score 5) ? **Un risque élevé de doublon favorise 'BUY'.**" 
+            },
+            legacy: { 
+                title: "Réutilisation du Legacy", 
+                description: "Le projet nécessite-t-il une réutilisation intensive et profonde de systèmes, modules ou APIs existantes (Legacy) (score 5) ? **Une forte réutilisation du Legacy favorise 'MAKE'.**" 
+            },
+            interop: { 
+                title: "Interopérabilité & APIs", 
+                description: "Est-il essentiel que la solution dispose d'interfaces ouvertes et d'une intégration fluide avec tous les autres systèmes (score 5) ? **Une bonne interopérabilité favorise 'BUY' (si APIs existent) et 'MAKE' (si elles doivent être faites sur mesure).**" 
+            },
+            skills: { 
+                title: "Compétences Internes Disponibles", 
+                description: "Avez-vous déjà en interne les compétences techniques et humaines (qualité et quantité) nécessaires pour développer, maintenir et supporter la solution (score 5) ? **Des compétences disponibles favorisent 'MAKE'.**" 
+            },
+            maintainability: { 
+                title: "Maintenabilité (Évolution à long terme)", 
+                description: "La capacité à faire évoluer la solution facilement sur 10 ans ou plus est-elle une priorité absolue (score 5) ? **Une forte exigence de maintenabilité/évolutivité interne favorise 'MAKE'.**" 
+            },
+            tco: { 
+                title: "Coût Total de Possession (TCO)", 
+                description: "La minimisation des coûts sur le cycle de vie complet (acquisition, licences, support, maintenance) est-elle la préoccupation principale (score 5) ? **La maîtrise du TCO favorise souvent 'BUY'.**" 
+            },
+            strategic: { 
+                title: "Alignement Stratégique (Cœur de métier)", 
+                description: "Le projet touche-t-il directement votre cœur de métier, votre avantage concurrentiel ou votre mission fondamentale (score 5) ? **Le cœur de métier favorise 'MAKE'.**" 
+            },
+            governance: { 
+                title: "Gouvernance (Contrôle Propriétaire vs Communauté)", 
+                description: "Avez-vous besoin d'un contrôle total et propriétaire sur les décisions de la solution (score 5) ? Le contrôle par un tiers (éditeur) ou une communauté vous convient-il (score 1) ? **Le contrôle sur la roadmap favorise 'MAKE'.**" 
+            },
+            security: { 
+                title: "Sécurité et Conformité (Réglementaire)", 
+                description: "La solution requiert-elle des certifications ou conformités réglementaires (ISO, RGPD, etc.) qui seraient plus facilement obtenues via un éditeur spécialisé (score 5) ? **Une sécurité/conformité clé en main favorise 'BUY'.**" 
+            },
+            dataValue: { 
+                title: "Valorisation des Données (Propriété et Exploitation)", 
+                description: "Est-il critique de posséder, de pouvoir exploiter sans restriction, et de monétiser les données générées par la solution (score 5) ? **La propriété des données favorise 'MAKE'.**" 
+            },
+            risk: { 
+                title: "Gestion des Risques (Simplicité d'intégration et Vendor Lock-in)", 
+                description: "La minimisation du risque de 'Vendor Lock-in' (dépendance à un fournisseur) et la simplicité d'intégration sont-elles importantes (score 5) ? **La minimisation du risque et la simplicité favorisent 'BUY'.**" 
+            }
+        };
+
+
+        // --- LOGIQUE DE L'APPLICATION ---
+
+        // Événement pour mettre à jour la valeur affichée du curseur
         document.querySelectorAll('.form-range').forEach(slider => {
             const valueDisplay = document.getElementById(slider.id.replace('Slider', 'Value'));
             slider.addEventListener('input', function() {
@@ -305,22 +555,25 @@
                 updateScores();
             });
         });
+        
+        // Événement pour charger le contenu du modal d'aide
+        const helpModal = document.getElementById('helpModal');
+        helpModal.addEventListener('show.bs.modal', event => {
+            const button = event.relatedTarget;
+            const criterionKey = button.getAttribute('data-criterion');
+            const data = criterionDescriptions[criterionKey];
 
+            document.getElementById('criterionTitle').textContent = data.title;
+            document.getElementById('criterionDescription').innerHTML = data.description;
+        });
+
+
+        // Fonction de calcul des scores
         function updateScores() {
-            const coefficients = {
-                specificity: { make: 5, buy: 1 },
-                timetomarket: { make: 1, buy: 5 },
-                control: { make: 5, buy: 1 },
-                tco: { make: 1, buy: 5 },
-                skills: { make: 4, buy: 2 },
-                risk: { make: 3, buy: 4 },
-                strategic: { make: 5, buy: 2 },
-                maintainability: { make: 4, buy: 3 }
-            };
-
             let makeScore = 0;
             let buyScore = 0;
 
+            // Calcul des scores en fonction des curseurs et des coefficients
             for (const [criterion, coeff] of Object.entries(coefficients)) {
                 const sliderElement = document.getElementById(criterion + 'Slider');
                 if (sliderElement) {
@@ -332,28 +585,20 @@
             
             document.getElementById('finalMakeScore').textContent = makeScore;
             document.getElementById('finalBuyScore').textContent = buyScore;
+
+            // Mettre à jour la recommandation
+            calculateRecommendation(makeScore, buyScore);
         }
 
+        // Fonction d'application des exemples de pondération
         function applyExample(type) {
             const makeExample = {
-                specificity: 5,
-                timetomarket: 1,
-                control: 5,
-                tco: 2,
-                skills: 4,
-                risk: 3,
-                strategic: 5,
-                maintainability: 5
+                specificity: 5, timetomarket: 1, control: 5, urbanism: 5, duplication: 1, legacy: 5, interop: 4, 
+                skills: 4, maintainability: 5, tco: 2, strategic: 5, governance: 5, security: 3, dataValue: 5, risk: 3
             };
             const buyExample = {
-                specificity: 1,
-                timetomarket: 5,
-                control: 1,
-                tco: 5,
-                skills: 1,
-                risk: 4,
-                strategic: 2,
-                maintainability: 3
+                specificity: 1, timetomarket: 5, control: 1, urbanism: 3, duplication: 5, legacy: 1, interop: 5, 
+                skills: 1, maintainability: 3, tco: 5, strategic: 2, governance: 2, security: 5, dataValue: 1, risk: 5
             };
 
             const exampleData = type === 'make' ? makeExample : buyExample;
@@ -365,57 +610,56 @@
                 }
             }
             updateScores();
-            // Simuler le clic sur le bouton de calcul pour montrer le résultat
-            document.getElementById('calculateBtn').click();
         }
 
-        document.getElementById('calculateBtn').addEventListener('click', function() {
-            const coefficients = {
-                specificity: { make: 5, buy: 1 },
-                timetomarket: { make: 1, buy: 5 },
-                control: { make: 5, buy: 1 },
-                tco: { make: 1, buy: 5 },
-                skills: { make: 4, buy: 2 },
-                risk: { make: 3, buy: 4 },
-                strategic: { make: 5, buy: 2 },
-                maintainability: { make: 4, buy: 3 }
-            };
-
-            let makeScore = 0;
-            let buyScore = 0;
-
-            for (const [criterion, coeff] of Object.entries(coefficients)) {
-                const sliderValue = parseInt(document.getElementById(criterion + 'Slider').value);
-                makeScore += coeff.make * sliderValue;
-                buyScore += coeff.buy * sliderValue;
-            }
-
+        // Fonction de détermination de la recommandation
+        function calculateRecommendation(makeScore, buyScore) {
             let recommendation = '';
             let explanation = '';
             let recommendationClass = '';
-            const threshold = 15;
+            const totalCriteria = Object.keys(coefficients).length; // 15 critères
+            const baseScore = totalCriteria * 3 * 5; // Score maximum théorique pour une pondération neutre (15 * 3 = 45) * 5 (le coeff maximum)
 
-            if (makeScore > buyScore + threshold) {
+            // Le seuil de tolérance est ajusté pour être plus strict (25 points de différence pour être "Fortement")
+            const threshold = 25; 
+
+            const difference = makeScore - buyScore;
+
+            if (difference > threshold) {
                 recommendation = 'Fortement recommandé de DÉVELOPPER (Make)';
-                explanation = 'Vos besoins sont uniques et le contrôle total est une priorité. Le développement en interne est le meilleur modèle.';
+                explanation = 'La majorité de vos priorités (Contrôle, Spécificité, Données, Urbanisation) penchent très fortement vers le développement interne.';
                 recommendationClass = 'make-recommendation';
-            } else if (buyScore > makeScore + threshold) {
+            } else if (difference < -threshold) {
                 recommendation = 'Fortement recommandé d\'ACQUÉRIR (Buy/Leverage)';
-                explanation = 'La rapidité, les coûts maîtrisés et l\'existence d\'une solution standard sont prioritaires. Cherchez une solution existante.';
+                explanation = 'Vos impératifs (Délai, TCO, Éviter le Doublon, Sécurité/Conformité éditeur) justifient l\'acquisition d\'une solution existante.';
                 recommendationClass = 'buy-recommendation';
-            } else {
+            } else if (difference > 0) {
+                 recommendation = 'Recommandation : LÉGÈREMENT MAKE';
+                explanation = 'Les scores sont équilibrés, mais l\'avantage est au développement interne. Considérez une **approche hybride** ciblant le développement du cœur de métier.';
+                recommendationClass = 'make-recommendation';
+            } else if (difference < 0) {
+                 recommendation = 'Recommandation : LÉGÈREMENT BUY';
+                explanation = 'Les scores sont équilibrés, mais l\'acquisition est légèrement favorisée. Privilégiez l\'acquisition avec des APIs pour l\'intégration Legacy.';
+                recommendationClass = 'buy-recommendation';
+            }
+            else {
                 recommendation = 'Approche Hybride ou Indécis';
-                explanation = 'Les scores sont équilibrés. La décision nécessite une analyse plus approfondie. Une approche hybride (développement de modules spécifiques sur une base existante) peut être envisagée.';
+                explanation = 'Égalité parfaite. Une analyse qualitative très fine est nécessaire. L\'approche hybride (Make & Buy) est souvent la solution optimale dans ce cas.';
                 recommendationClass = 'undecided-recommendation';
             }
 
             document.getElementById('recommendationText').textContent = recommendation;
             document.getElementById('recommendationText').className = 'recommendation ' + recommendationClass;
             document.getElementById('recommendationExplanation').textContent = explanation;
+        }
+
+        // Événement pour le bouton "Calculer" 
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            updateScores();
         });
 
-        // Initialisation des scores au chargement de la page
-        updateScores();
+        // Initialisation des scores et de la recommandation au chargement de la page
+        window.onload = updateScores;
     </script>
 </body>
 </html>
